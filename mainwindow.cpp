@@ -9,19 +9,6 @@
 #include <QPushButton>
 #include <QFileDialog>
 
-QStandardItem * GetStandardItemImage( QString & filename )
-{
-  QStandardItem * imageitem = new QStandardItem();
-  imageitem->setText( filename);
-  QImage image( ":/" + filename ); 
-  imageitem->setIcon ( 
-    QIcon( 
-    QPixmap::fromImage( image.scaled( QSize( 104, 104 ), Qt::KeepAspectRatio, Qt::SmoothTransformation ) )
-    ) 
-    );
-  return imageitem;
-}
-
 MainWindow::MainWindow(QWidget *parent) :
     QMainWindow(parent),
     signalMapper( NULL ),
@@ -123,15 +110,6 @@ void MainWindow::Init( QString &filename )
 }
 void MainWindow::SetupWidgets ()
 {
-    QStandardItemModel * model = new QStandardItemModel(this);
-    ui->MapItems->setModel ( model );
-    Helper * helper = Helper::Instance ();
-    pNamesVector names = helper->GetItemNames ();
-    model->appendRow( GetStandardItemImage( QString("cursor") ) );
-    for( size_t i = 0; i < names->size(); i++ )
-    {
-        model->appendRow( GetStandardItemImage( (*names)[i] ) );
-    }
     signalMapper = new QSignalMapper( this );
     ui->gridLayout->setSpacing( 10 );
     ui->gridLayout->setHorizontalSpacing( 0 );
@@ -161,7 +139,6 @@ void MainWindow::SetupWidgets ()
     }
     connect(signalMapper, SIGNAL(mapped(QWidget*)),
             this, SLOT(labelClicked(QWidget*)));
-
 }
 
 void MainWindow::ResetWidgets()
@@ -182,8 +159,6 @@ void MainWindow::labelClicked( QWidget * wdg )
     button->setChecked( false );
     return;
   }
-  QModelIndex index = ui->MapItems->currentIndex();
-  //QMessageBox::information(this, "debug" , QString::number( index.row() ), QMessageBox::Ok);
   if( button->isChecked() )
   {
     if( LastChecked )
@@ -192,17 +167,6 @@ void MainWindow::labelClicked( QWidget * wdg )
     curItemIndex = plst.GetButtonIndex( button );
     ui->Number->setText( QString::number( plst.getItem( curItemIndex )->index ) );
   }
-  //if( index.row() != 0 )
-  //{
-  //  
-  //  Helper * helper = Helper::Instance();
-  //  pNamesVector vect = helper->GetItemNames();
-  //  cell * item = plst.getItem( curItemIndex );
-  //  item->setState( helper->GetStateByItemName((*vect)[index.row()-1]) );
-  //  item->UpdateView();
-  //  //button->setIcon( QIcon( ":/" + (*vect)[index.row()-1] ) );
-  //}
-  
   cell * item = plst.getItem( curItemIndex );
   ToolAction( item );
   item->UpdateView();

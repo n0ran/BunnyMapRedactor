@@ -1,7 +1,7 @@
 /********************************************************************************
 ** Form generated from reading UI file 'mainwindow.ui'
 **
-** Created: Thu 1. Nov 22:51:14 2012
+** Created: Sat 3. Nov 13:20:32 2012
 **      by: Qt User Interface Compiler version 4.8.2
 **
 ** WARNING! All changes made in this file will be lost when recompiling UI file!
@@ -19,7 +19,6 @@
 #include <QtGui/QHeaderView>
 #include <QtGui/QLabel>
 #include <QtGui/QLineEdit>
-#include <QtGui/QListView>
 #include <QtGui/QMainWindow>
 #include <QtGui/QMenuBar>
 #include <QtGui/QPushButton>
@@ -35,7 +34,6 @@ class Ui_MainWindow
 {
 public:
     QWidget *centralWidget;
-    QListView *MapItems;
     QLabel *backgroundLabel;
     QWidget *gridLayoutWidget;
     QGridLayout *gridLayout;
@@ -64,22 +62,9 @@ public:
     {
         if (MainWindow->objectName().isEmpty())
             MainWindow->setObjectName(QString::fromUtf8("MainWindow"));
-        MainWindow->resize(920, 620);
+        MainWindow->resize(920, 557);
         centralWidget = new QWidget(MainWindow);
         centralWidget->setObjectName(QString::fromUtf8("centralWidget"));
-        MapItems = new QListView(centralWidget);
-        MapItems->setObjectName(QString::fromUtf8("MapItems"));
-        MapItems->setGeometry(QRect(10, 520, 780, 60));
-        MapItems->setAcceptDrops(true);
-        MapItems->setVerticalScrollBarPolicy(Qt::ScrollBarAlwaysOff);
-        MapItems->setHorizontalScrollBarPolicy(Qt::ScrollBarAlwaysOff);
-        MapItems->setEditTriggers(QAbstractItemView::NoEditTriggers);
-        MapItems->setDragEnabled(true);
-        MapItems->setDragDropMode(QAbstractItemView::NoDragDrop);
-        MapItems->setMovement(QListView::Static);
-        MapItems->setSpacing(10);
-        MapItems->setViewMode(QListView::IconMode);
-        MapItems->setUniformItemSizes(true);
         backgroundLabel = new QLabel(centralWidget);
         backgroundLabel->setObjectName(QString::fromUtf8("backgroundLabel"));
         backgroundLabel->setGeometry(QRect(10, 0, 780, 520));

@@ -7,53 +7,13 @@
     <x>0</x>
     <y>0</y>
     <width>920</width>
-    <height>620</height>
+    <height>557</height>
    </rect>
   </property>
   <property name="windowTitle">
    <string>MainWindow</string>
   </property>
   <widget class="QWidget" name="centralWidget">
-   <widget class="QListView" name="MapItems">
-    <property name="geometry">
-     <rect>
-      <x>10</x>
-      <y>520</y>
-      <width>780</width>
-      <height>60</height>
-     </rect>
-    </property>
-    <property name="acceptDrops">
-     <bool>true</bool>
-    </property>
-    <property name="verticalScrollBarPolicy">
-     <enum>Qt::ScrollBarAlwaysOff</enum>
-    </property>
-    <property name="horizontalScrollBarPolicy">
-     <enum>Qt::ScrollBarAlwaysOff</enum>
-    </property>
-    <property name="editTriggers">
-     <set>QAbstractItemView::NoEditTriggers</set>
-    </property>
-    <property name="dragEnabled">
-     <bool>true</bool>
-    </property>
-    <property name="dragDropMode">
-     <enum>QAbstractItemView::NoDragDrop</enum>
-    </property>
-    <property name="movement">
-     <enum>QListView::Static</enum>
-    </property>
-    <property name="spacing">
-     <number>10</number>
-    </property>
-    <property name="viewMode">
-     <enum>QListView::IconMode</enum>
-    </property>
-    <property name="uniformItemSizes">
-     <bool>true</bool>
-    </property>
-   </widget>
    <widget class="QLabel" name="backgroundLabel">
     <property name="geometry">
      <rect>
