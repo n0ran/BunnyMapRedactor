@@ -18,6 +18,20 @@ class MainWindow : public QMainWindow
     Q_OBJECT
     
 public:
+    enum toolsButtonAction {
+      nothing,
+      cursor,
+      set_original,
+      set_bunny,
+      set_active,
+      set_bomb,
+      set_fire,
+      set_block,
+      set_strong,
+      set_teleport,
+      set_monster
+    };
+
     explicit MainWindow(QWidget *parent = 0);
     ~MainWindow();
 
@@ -37,7 +51,7 @@ public slots:
     void OpenFileButtonClicked();
     void SaveFileButtonClicked();
     void CreateFileButtonClicked();
-    void ToolsClicked();
+    void ToolsClicked( QWidget * wdg );
 private:
     void Clear();
     void StartInit();
@@ -48,11 +62,16 @@ private:
     void ResetWidgets();
     void ResetWidgets( QString &filename );
     void UpdateControls();
+    void ToolAction( cell * item );
     QPushButton * LastChecked;
     long  curItemIndex;
     QSignalMapper * signalMapper;
+    QSignalMapper * toolMapper;
     Ui::MainWindow * ui;
     plist plst;
+
+    toolsButtonAction tool_action;
+    QPushButton * lastToolClicked;
 };
 
 //QStandardItem * GetStandardItemImage( QString & filename );

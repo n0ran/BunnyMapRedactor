@@ -33,6 +33,7 @@ MainWindow::MainWindow(QWidget *parent) :
 
 MainWindow::~MainWindow()
 {
+  delete toolMapper;
   Clear();
 }
 
@@ -48,21 +49,27 @@ void MainWindow::StartInit()
   ui = new Ui::MainWindow;
   ui->setupUi( this );
   LastChecked = NULL;
+  lastToolClicked = NULL;
   curItemIndex = -1;
+  tool_action = nothing;
 
   ui->mainToolBar->addWidget( ui->createFileButton );
   ui->mainToolBar->addWidget( ui->openFileButton );
   ui->mainToolBar->addWidget( ui->saveFileButton );
   ui->mainToolBar->addSeparator();
 
+  toolMapper = new QSignalMapper( this );
   Helper * helper = Helper::Instance ();
   pNamesVector names = helper->GetItemNames ();
   QPushButton * button = new QPushButton;
   button->setIcon( QIcon(":/cursor") );
   button->setCheckable( true );
   button->setFixedSize( 50, 50 );
-  button->setIconSize(QSize(40, 40));
+  button->setIconSize( QSize(40, 40) );
+  button->setObjectName( QString("cursor") );
   button->setFlat( true );
+  connect( button, SIGNAL(clicked()), toolMapper, SLOT( map() ) ); 
+  toolMapper->setMapping( button, button );
   ui->mainToolBar->addWidget( button );
   button = NULL;
   for( size_t i = 0; i < names->size(); i++ )
@@ -73,9 +80,14 @@ void MainWindow::StartInit()
     button->setFixedSize( 50, 50 );
     button->setIconSize(QSize(40, 40));
     button->setFlat( true );
+    button->setObjectName( (*names)[i] );
+    connect( button, SIGNAL(clicked()), toolMapper, SLOT( map() ) ); 
+    toolMapper->setMapping( button, button );
     ui->mainToolBar->addWidget( button );
     button = NULL;
   }
+  bool ret = connect(toolMapper, SIGNAL(mapped(QWidget*)),
+    this, SLOT(ToolsClicked(QWidget*)));
 
   connect( ui->IsOriginal , SIGNAL(clicked()), this, SLOT(RBOriginalClicked() ) );
   connect( ui->IsActive   , SIGNAL(clicked()), this, SLOT(RBActiveClicked()   ) );
@@ -164,9 +176,14 @@ void MainWindow::ResetWidgets( QString &filename )
 }
 void MainWindow::labelClicked( QWidget * wdg )
 {
+  QPushButton * button = dynamic_cast<QPushButton*>( wdg );
+  if( tool_action == nothing )
+  {
+    button->setChecked( false );
+    return;
+  }
   QModelIndex index = ui->MapItems->currentIndex();
   //QMessageBox::information(this, "debug" , QString::number( index.row() ), QMessageBox::Ok);
-  QPushButton * button = dynamic_cast<QPushButton*>( wdg );
   if( button->isChecked() )
   {
     if( LastChecked )
@@ -175,20 +192,83 @@ void MainWindow::labelClicked( QWidget * wdg )
     curItemIndex = plst.GetButtonIndex( button );
     ui->Number->setText( QString::number( plst.getItem( curItemIndex )->index ) );
   }
-  if( index.row() != 0 )
-  {
-    
-    Helper * helper = Helper::Instance();
-    pNamesVector vect = helper->GetItemNames();
-    cell * item = plst.getItem( curItemIndex );
-    item->setState( helper->GetStateByItemName((*vect)[index.row()-1]) );
-    item->UpdateView();
-    //button->setIcon( QIcon( ":/" + (*vect)[index.row()-1] ) );
-  }
+  //if( index.row() != 0 )
+  //{
+  //  
+  //  Helper * helper = Helper::Instance();
+  //  pNamesVector vect = helper->GetItemNames();
+  //  cell * item = plst.getItem( curItemIndex );
+  //  item->setState( helper->GetStateByItemName((*vect)[index.row()-1]) );
+  //  item->UpdateView();
+  //  //button->setIcon( QIcon( ":/" + (*vect)[index.row()-1] ) );
+  //}
+  
+  cell * item = plst.getItem( curItemIndex );
+  ToolAction( item );
+  item->UpdateView();
   UpdateControls();
 }
+void MainWindow::ToolAction( cell * item )
+{
+  state st;
+  switch( tool_action )
+  {
+  case nothing:
+  case cursor:
+    return;
+  case set_original : st = s_original ; break;
+  case set_bunny    : st = s_bunny    ; break; 
+  case set_active   : st = s_active   ; break;
+  case set_bomb     : st = s_bomb     ; break;
+  case set_fire     : st = s_fire     ; break;
+  case set_block    : st = s_block    ; break;
+  case set_strong   : st = s_strong   ; break;
+  case set_teleport : st = s_teleport ; break;
+  case set_monster  : st = s_monster  ; break;
+  }
+  item->hextype = st;
+}
 
-void MainWindow::ToolsClicked(){ };
+void MainWindow::ToolsClicked( QWidget * wdg )
+{
+  QPushButton * button = dynamic_cast<QPushButton*>(wdg);
+
+  if( lastToolClicked == button )
+  {
+    lastToolClicked = NULL;
+    tool_action = nothing;
+    return;
+  }
+  else
+  {
+    if( lastToolClicked )
+      lastToolClicked->setChecked( false );
+    lastToolClicked = button;
+    QString & objname = button->objectName();
+    Helper * helper = Helper::Instance();
+    if( objname == QString("cursor") )
+      tool_action = cursor;
+    else if( objname == helper->GetItemNameByState( s_original ) )
+      tool_action = set_original;
+    else if( objname == helper->GetItemNameByState( s_bunny ) )
+      tool_action = set_bunny;
+    else if( objname == helper->GetItemNameByState( s_active ) )
+      tool_action = set_active;
+    else if( objname == helper->GetItemNameByState( s_bomb ) )
+      tool_action = set_bomb;
+    else if( objname == helper->GetItemNameByState( s_fire ) )
+      tool_action = set_fire;
+    else if( objname == helper->GetItemNameByState( s_block ) )
+      tool_action = set_block;
+    else if( objname == helper->GetItemNameByState( s_strong ) )
+      tool_action = set_strong;
+    else if( objname == helper->GetItemNameByState( s_teleport ) )
+      tool_action = set_teleport;
+    else if( objname == helper->GetItemNameByState( s_monster ) )
+      tool_action = set_monster;
+  }
+
+};
 void MainWindow::RBOriginalClicked(){   PropertiesLogic( s_original );  }
 void MainWindow::RBActiveClicked()  {   PropertiesLogic( s_active   );  }
 void MainWindow::RBBlockClicked()   {   PropertiesLogic( s_block    );  }
