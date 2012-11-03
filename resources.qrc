@@ -1,0 +1,21 @@
+<RCC>
+    <qresource prefix="/">
+        <file alias="background.png">resources/background.png</file>
+        <file alias="bunny">resources/bany_idle_0.png</file>
+        <file alias="hex_dynamite">resources/hex_dynamite.png</file>
+        <file alias="hex_fire">resources/hex_fire_0.png</file>
+        <file alias="hex_stone">resources/hex_stone.png</file>
+        <file alias="hex_strong">resources/hex_strong.png</file>
+        <file alias="hex_teleport">resources/hex_teleport_0.png</file>
+        <file alias="monster">resources/monster_idle_0.png</file>
+        <file alias="original">resources/original.png</file>
+        <file alias="back">resources/back.png</file>
+        <file alias="invisible">resources/hex - invisible.png</file>
+        <file alias="cursor">resources/glowing_cursor.png</file>
+        <file alias="active">resources/hex_active.png</file>
+        <file alias="clear">resources/clear.png</file>
+        <file alias="openfile">resources/file-open-icon.png</file>
+        <file alias="savefile">resources/file-save-as-icon.png</file>
+        <file alias="newfile">resources/file-new-icon.png</file>
+    </qresource>
+</RCC>
