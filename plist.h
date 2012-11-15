@@ -12,7 +12,7 @@ using std::map;
 class cell
 {
 public:
-  cell( int ind, state htype = s_original, int tmr = -1, bool vsbl = true );
+  cell( int ind, state htype = s_original, state unt = s_original, int tmr = -1, bool vsbl = true );
   ~cell();
 
   void setState( state ht );
@@ -21,6 +21,7 @@ public:
   bool Serialize( QTextStream * out, int &level );
 public:
   state hextype;
+	state unit;
   int   timer;
   int   index;
   bool  isVisible;
@@ -33,6 +34,8 @@ class parametres
 public:
   parametres();
   bool Serialize( QTextStream * out, int &level );
+	void SetHorizontalNumber( int n );
+	void SetVerticalNumber( int n );
 public:
   int horizontalNumber;
   int verticalNumber;
@@ -43,17 +46,20 @@ public:
 class plist
 {
 public:
-  plist(void);
+  plist( int w = 9, int h = 5 );
   ~plist(void);
 
   void initArray( QMainWindow * mWnd = NULL );
   void initArray( QMainWindow * mWnd, QString &filename );
-  //void initArray( QString &filename, QMainWindow * mWnd = NULL );
   cell * getItem( int index );
   void addItem( cell * pcell );
   int GetButtonIndex( QPushButton * button );
   bool Serialize( QTextStream * out, int &level );
   bool SaveInFile( QString filename );
+	int	GetWidth();
+	int GetHeight();
+	void SetWidth( int w );
+	void SetHeight( int h );
   void clear();
 private:
   map< int, cell* > arr;

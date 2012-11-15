@@ -1,6 +1,7 @@
 #include "mainwindow.h"
 #include "ui_mainwindow.h"
 #include "helper.h"
+#include "mapsizedialog.h"
 #include <vector>
 #include <QStandardItem>
 #include <QStandardItemModel>
@@ -92,11 +93,12 @@ void MainWindow::StartInit()
   connect( ui->createFileButton, SIGNAL(clicked()), this, SLOT( CreateFileButtonClicked() ) );
 
 }
+
 void MainWindow::Init()
 {
-  //todo: dialog mapsize
   StartInit();
   plst.clear();
+	SetupParamsDialog();
   plst.initArray( this );
   SetupWidgets ();
 }
@@ -108,6 +110,18 @@ void MainWindow::Init( QString &filename )
   plst.initArray( this, filename );
   SetupWidgets ();
 }
+
+void MainWindow::SetupParamsDialog()
+{
+	MapSizeDialog msd;
+	if( msd.exec() == QDialog::Accepted )
+	{
+		plst.SetWidth( msd.GetWidth() );
+		plst.SetHeight( msd.GetHeight() );
+	}
+	
+}
+
 void MainWindow::SetupWidgets ()
 {
     signalMapper = new QSignalMapper( this );
@@ -117,23 +131,29 @@ void MainWindow::SetupWidgets ()
     QVBoxLayout * vertLayout  = NULL;
     QHBoxLayout * horLayout   = NULL;
     int col = 0;
-    for( int i = 0; i < 45;  )
+    for( int i = 0; i < plst.GetWidth() * plst.GetHeight();  )
     {
       horLayout = new QHBoxLayout( this );
       ui->gridLayout->addLayout( horLayout, 0, col  );
       vertLayout = new QVBoxLayout();
-      vertLayout->setSpacing( 10 );
+      vertLayout->setSpacing( 1 );
+			vertLayout->setAlignment( Qt::AlignVCenter );
       horLayout->addLayout( vertLayout );
-      int num = (col%2 == 0) ? 4 : 5;
-      if( num == 4 )
+			horLayout->setAlignment( Qt::AlignHCenter );
+      int num = (col%2 == 0) ? plst.GetHeight()-1 : plst.GetHeight();
+      if( num == plst.GetHeight()-1 )
         i++;
       for( int k = 0; k < num; k++, i++ )
       {
-        int ind = (col+1)*5 - (k + 1);
-        QPushButton * button = plst.getItem( ind )->button;
+        int ind = (col+1)*plst.GetHeight() - (k + 1);
+				cell * item = plst.getItem( ind );
+        QPushButton * button = item->button;
         vertLayout->addWidget( button );
-        connect( button, SIGNAL(clicked()), signalMapper, SLOT( map() ) ); 
+        
+				connect( button, SIGNAL(clicked()), signalMapper, SLOT( map() ) ); 
         signalMapper->setMapping( button, button );
+				
+				item->UpdateView();
       }
       col++;
     }
@@ -190,7 +210,7 @@ void MainWindow::ToolAction( cell * item )
   case set_teleport : st = s_teleport ; break;
   case set_monster  : st = s_monster  ; break;
   }
-  item->hextype = st;
+	item->setState( st );
 }
 
 void MainWindow::ToolsClicked( QWidget * wdg )

@@ -193,7 +193,16 @@ bool xmlReader::endElement(
 
     }
   }
-  //  QMessageBox::information(NULL, "text" , currentText + " " + QString::number((int)val), QMessageBox::Ok);
+	else
+	{
+		switch( val )
+		{
+		case Integer:
+			lastVal = val;
+			setParamsValues( lastKey );
+			break;
+		}
+	}
 
   return true;
 }
@@ -211,40 +220,57 @@ bool xmlReader::fatalError( const QXmlParseException &xcptn )
   return true;
 }
 
+bool xmlReader::setParamsValues( keyValues val )
+{
+	switch( val )
+	{
+	case verticalNumber:
+		pplist->SetHeight( currentText.toInt() );
+		break;
+	case horizontalNumber:
+		pplist->SetWidth( currentText.toInt() );
+		break;
+	/*default:
+		break;*/
+	}
+	return true;
+}
+
 bool xmlReader::setValueByLastKey( keyValues val )
 {
   if( !pcell )
     return true;
+	state st = s_original;
   switch( val )
   {
   case active:
-    pcell->hextype = s_active;
+    pcell->setState( s_active );
     break;
   case block:
-    pcell->hextype = s_block;
+    pcell->setState( s_block );
     break;
   case bomb:
     pcell->timer = currentText.toInt();
     if( pcell->timer >= 0 )
-      pcell->hextype = s_bomb;
+      pcell->setState( s_bomb );
     break;
   case bunny:
-    pcell->hextype = s_bunny;
+    pcell->setState( s_bunny );
     break;
   case fire:
-    pcell->hextype = s_fire;
+    pcell->setState( s_fire );
     break;
   case monster:
-    pcell->hextype = s_monster;
+    pcell->setState( s_monster );
     break;
   case number:
     pcell->index = currentText.toInt();
     break;
   case strong:
-    pcell->hextype = s_strong;
+    pcell->setState( s_strong );
     break;
   case teleport:
-    pcell->hextype = s_teleport;
+    pcell->setState( s_teleport );
     break;
   case visible:
     if( lastVal == True )
@@ -257,6 +283,7 @@ bool xmlReader::setValueByLastKey( keyValues val )
     //  case verticalNumber:
     //    break;
   }
+
 
   return true;
 }

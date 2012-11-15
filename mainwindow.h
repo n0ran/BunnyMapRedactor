@@ -57,6 +57,7 @@ private:
     void StartInit();
     void Init();
     void Init( QString &filename );
+		void SetupParamsDialog();
     void PropertiesLogic( state st );
     void SetupWidgets();
     void ResetWidgets();

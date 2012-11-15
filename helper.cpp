@@ -16,6 +16,9 @@ Helper::~Helper ()
 
 Helper* Helper::_instance = NULL;
 
+int Helper::vnumber = 5;
+int Helper::hnumber = 9;
+
 Helper* Helper::Instance ()
 {
     if( _instance == NULL )
@@ -36,6 +39,7 @@ state Helper::GetStateByItemName( QString & itemName )
     else if ( itemName ==  "hex_strong"    ) return s_strong;
     else if ( itemName ==  "hex_teleport"  ) return s_teleport;
     else if ( itemName ==  "monster"       ) return s_monster;
+		else if ( itemName ==  "invisible"		 ) return s_invisible;
   return s_original;
 }
 QString& Helper::GetItemNameByState( state st )
@@ -51,6 +55,7 @@ QString& Helper::GetItemNameByState( state st )
   case s_strong   : return (*ItemNames)[6];
   case s_teleport : return (*ItemNames)[7];
   case s_monster  : return (*ItemNames)[8];
+	case s_invisible	: return (*ItemNames)[9];
   }
   return (*ItemNames)[0];
   }

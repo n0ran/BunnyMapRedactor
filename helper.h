@@ -3,6 +3,7 @@
 
 #include <QString>
 #include <vector>
+
 using std::vector;
 
 #define GetVarName(var) #var
@@ -19,7 +20,9 @@ enum state {
   s_fire, 
   s_monster, 
   s_strong, 
-  s_teleport  };
+  s_teleport,
+	s_invisible
+};
 class Helper
 {
 public:
@@ -31,6 +34,8 @@ public:
     QString& GetItemNameByVisible( bool v, state st );
     pNamesVector GetItemNames();
 
+		static int vnumber;
+		static int hnumber;
 protected:
     Helper();
     void InitItemNamesVector();

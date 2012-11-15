@@ -1,7 +1,7 @@
 /********************************************************************************
 ** Form generated from reading UI file 'mainwindow.ui'
 **
-** Created: Sat 3. Nov 13:20:32 2012
+** Created: Thu 15. Nov 19:37:20 2012
 **      by: Qt User Interface Compiler version 4.8.2
 **
 ** WARNING! All changes made in this file will be lost when recompiling UI file!
@@ -62,18 +62,18 @@ public:
     {
         if (MainWindow->objectName().isEmpty())
             MainWindow->setObjectName(QString::fromUtf8("MainWindow"));
-        MainWindow->resize(920, 557);
+        MainWindow->resize(1009, 633);
         centralWidget = new QWidget(MainWindow);
         centralWidget->setObjectName(QString::fromUtf8("centralWidget"));
         backgroundLabel = new QLabel(centralWidget);
         backgroundLabel->setObjectName(QString::fromUtf8("backgroundLabel"));
-        backgroundLabel->setGeometry(QRect(10, 0, 780, 520));
+        backgroundLabel->setGeometry(QRect(0, 0, 880, 600));
         backgroundLabel->setPixmap(QPixmap(QString::fromUtf8(":/back")));
         backgroundLabel->setScaledContents(true);
         backgroundLabel->setAlignment(Qt::AlignLeading|Qt::AlignLeft|Qt::AlignVCenter);
         gridLayoutWidget = new QWidget(centralWidget);
         gridLayoutWidget->setObjectName(QString::fromUtf8("gridLayoutWidget"));
-        gridLayoutWidget->setGeometry(QRect(40, 0, 720, 520));
+        gridLayoutWidget->setGeometry(QRect(0, 0, 870, 600));
         gridLayout = new QGridLayout(gridLayoutWidget);
         gridLayout->setSpacing(6);
         gridLayout->setContentsMargins(11, 11, 11, 11);
@@ -81,7 +81,7 @@ public:
         gridLayout->setContentsMargins(0, 0, 0, 0);
         verticalLayoutWidget = new QWidget(centralWidget);
         verticalLayoutWidget->setObjectName(QString::fromUtf8("verticalLayoutWidget"));
-        verticalLayoutWidget->setGeometry(QRect(800, 0, 110, 297));
+        verticalLayoutWidget->setGeometry(QRect(890, 0, 110, 297));
         verticalLayout = new QVBoxLayout(verticalLayoutWidget);
         verticalLayout->setSpacing(6);
         verticalLayout->setContentsMargins(11, 11, 11, 11);
@@ -191,7 +191,7 @@ public:
         MainWindow->setCentralWidget(centralWidget);
         menuBar = new QMenuBar(MainWindow);
         menuBar->setObjectName(QString::fromUtf8("menuBar"));
-        menuBar->setGeometry(QRect(0, 0, 920, 19));
+        menuBar->setGeometry(QRect(0, 0, 1009, 21));
         MainWindow->setMenuBar(menuBar);
         mainToolBar = new QToolBar(MainWindow);
         mainToolBar->setObjectName(QString::fromUtf8("mainToolBar"));

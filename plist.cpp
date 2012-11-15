@@ -4,14 +4,30 @@
 #include <QtXml/QXmlInputSource>
 #include <QMessageBox>
 #include "xml.h"
+#include <QPainter>
 
-const int pictureWidth  = 64;
-const int pictureHeight = 64;
+const int pictureWidth  = 100;
+const int pictureHeight = 100;
 
-plist::plist(void)
+const int def_vnumber = 5;
+const int def_hnumber = 9;
+
+int GetButtonWidth()
 {
+	double val = ( 1.0 * def_hnumber / Helper::hnumber )*pictureWidth + 4; 
+	return (int)val;
+}
 
-  
+int GetButtonHeight()
+{
+	double val = ( 1.0 * def_vnumber / Helper::vnumber )*pictureHeight + 4;
+	return (int)val;
+}
+
+plist::plist( int w, int h )
+{
+	params.SetHorizontalNumber( w );
+	params.SetVerticalNumber( h );
 }
 
 plist::~plist(void)
@@ -22,14 +38,14 @@ plist::~plist(void)
 void plist::initArray( QMainWindow * mWnd )
 {
   int col = 0;
-  for( int i = 0; i < 45;  )
+  for( int i = 0; i < params.verticalNumber * params.horizontalNumber;  )
   {
-    int num = (col%2 == 0) ? 4 : 5;
-    if( num == 4 )
+    int num = (col%2 == 0) ? params.verticalNumber-1 : params.verticalNumber;
+    if( num == params.verticalNumber-1 )
       i++;
     for( int k = 0; k < num; k++, i++ )
     {
-      int ind = (col+1)*5 - (k + 1);
+      int ind = (col+1)*params.verticalNumber - (k + 1);
       cell * item = new cell(ind);
       item->initButton( mWnd );
       arr[ind] = item;
@@ -114,10 +130,30 @@ bool plist::SaveInFile( QString filename )
   return wr.SaveFile();
 }
 
+int plist::GetWidth()
+{
+	return params.horizontalNumber;
+}
+
+int plist::GetHeight()
+{
+	return params.verticalNumber;
+}
+
+void plist::SetWidth( int w )
+{
+	params.SetHorizontalNumber( w );
+}
+
+void plist::SetHeight( int h )
+{
+	params.SetVerticalNumber( h );
+}
 ///////////////////////////////////////////////////////////////////////////
 
-cell::cell( int ind, state htype /* = original */, int tmr /* = -1 */, bool vsbl /* = true */ ) :
+cell::cell( int ind, state htype /* = original */, state unt /* = original */, int tmr /* = -1 */, bool vsbl /* = true */ ) :
     hextype ( htype   ),
+		unit	( unt ),
     timer   ( tmr     ),
     index  ( ind     ),
     isVisible ( vsbl    ),
@@ -133,16 +169,29 @@ cell::~cell()
 
 void cell::setState( state ht )
 {
-  hextype = ht;
+	switch( ht )
+	{
+	case s_bunny:
+	case s_active:
+	case s_monster:
+		if( unit != ht )
+			unit = ht;
+		else
+			unit = s_original;
+		break;
+	default:
+		hextype = ht;
+	}
+
 }
 
 void cell::initButton( QMainWindow * mWnd )
 {
   Helper * help = Helper::Instance();
   button = new QPushButton( QIcon(":/" + help->GetItemNameByState( hextype )), "",  mWnd );
-  button->setFixedWidth( pictureWidth+4 );
-  button->setFixedHeight( pictureHeight+4 );
-  button->setIconSize( QSize( pictureWidth, pictureHeight ) );
+  button->setFixedWidth( GetButtonWidth() );
+  button->setFixedHeight( GetButtonHeight() );
+  button->setIconSize( QSize( GetButtonWidth(), GetButtonHeight() ) );
   button->setFlat( true );
   button->setCheckable(true);
 }
@@ -150,7 +199,24 @@ void cell::initButton( QMainWindow * mWnd )
 void cell::UpdateView()
 {
   Helper * help = Helper::Instance();
-  button->setIcon( QIcon(":/" + help->GetItemNameByVisible( isVisible, hextype ) ) );
+
+	if( isVisible && unit != s_original )
+	{
+		QImage source( ":/" + help->GetItemNameByState( hextype ) );
+		QImage destination( ":/" + help->GetItemNameByState( unit ) );
+		//destination = destination.scaled( button->width(), button->height() );
+		QPainter resultPainter(&source);
+
+		resultPainter.setCompositionMode( QPainter::CompositionMode_SourceOver );
+		resultPainter.drawImage( 0, 0, destination );
+		resultPainter.end();    
+
+		button->setIcon( QIcon( QPixmap::fromImage( source ) ) );
+	}
+	else
+	{
+		button->setIcon( QIcon(":/" + help->GetItemNameByVisible( isVisible, hextype ) ) );
+	}
 }                                                                           
 
 bool cell::Serialize( QTextStream * out, int &level )
@@ -159,7 +225,7 @@ bool cell::Serialize( QTextStream * out, int &level )
   StreamWriteLevUp( out, oTag( helper->getStringByKeyDef(Dict) ) );
 
   StreamWrite( out, xmlHelper::wrapKeyValInKeyVal( key, active ) );
-  StreamWrite( out, ocTag( xmlHelper::getStringByBoolean( hextype == s_active ) ) );
+  StreamWrite( out, ocTag( xmlHelper::getStringByBoolean( unit == s_active ) ) );
 
   StreamWrite( out, xmlHelper::wrapKeyValInKeyVal( key, block ) );
   StreamWrite( out, ocTag( xmlHelper::getStringByBoolean( hextype == s_block ) ) );
@@ -168,13 +234,13 @@ bool cell::Serialize( QTextStream * out, int &level )
   StreamWrite( out, xmlHelper::wrapStringInKeyVal( Integer, xmlHelper::getStringByInteger(timer)) );
 
   StreamWrite( out, xmlHelper::wrapKeyValInKeyVal( key, bunny ) );
-  StreamWrite( out, ocTag( xmlHelper::getStringByBoolean( hextype == s_bunny ) ) );
+  StreamWrite( out, ocTag( xmlHelper::getStringByBoolean( unit == s_bunny ) ) );
 
   StreamWrite( out, xmlHelper::wrapKeyValInKeyVal( key, fire ) );
   StreamWrite( out, ocTag( xmlHelper::getStringByBoolean( hextype == s_fire ) ) );
 
   StreamWrite( out, xmlHelper::wrapKeyValInKeyVal( key, monster ) );
-  StreamWrite( out, ocTag( xmlHelper::getStringByBoolean( hextype == s_monster ) ) );
+  StreamWrite( out, ocTag( xmlHelper::getStringByBoolean( unit == s_monster ) ) );
 
   StreamWrite( out, xmlHelper::wrapKeyValInKeyVal( key, number) );
   StreamWrite( out, xmlHelper::wrapStringInKeyVal( Integer, xmlHelper::getStringByInteger(index)) );
@@ -195,8 +261,6 @@ bool cell::Serialize( QTextStream * out, int &level )
 
 parametres::parametres()
 {
-  horizontalNumber = 9;
-  verticalNumber = 5;
 }
 bool parametres::Serialize( QTextStream * out, int &level )
 {
@@ -214,4 +278,16 @@ bool parametres::Serialize( QTextStream * out, int &level )
 
   StreamWriteLevDown( out, cTag( helper->getStringByKeyDef(Dict) ) );
   return true;
+}
+
+void parametres::SetHorizontalNumber( int n )
+{
+	horizontalNumber = n;
+	Helper::hnumber = horizontalNumber;
+}
+
+void parametres::SetVerticalNumber( int n )
+{
+	verticalNumber = n;
+	Helper::vnumber = verticalNumber;
 }

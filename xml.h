@@ -79,6 +79,8 @@ public:
   virtual bool fatalError( const QXmlParseException &xcptn );
 
   virtual bool setValueByLastKey( keyValues val );
+
+	virtual bool setParamsValues( keyValues val );
 private:
   QString currentText;
   keyValues lastKey;
