@@ -42,6 +42,7 @@ state Helper::GetStateByItemName( QString & itemName )
 		else if ( itemName ==  "invisible"		 ) return s_invisible;
   return s_original;
 }
+
 QString& Helper::GetItemNameByState( state st )
 {
   switch ( st )
@@ -66,6 +67,22 @@ QString& Helper::GetItemNameByState( state st )
   else
     return (*ItemNames)[9];
 }
+
+void Helper::TBInitSequence( std::map< int, vector< state > > & sequence )
+{
+	sequence.clear();
+	sequence[0].push_back( s_original );
+	sequence[0].push_back( s_bomb );
+	sequence[0].push_back( s_fire );
+	sequence[0].push_back( s_block );
+	sequence[0].push_back( s_strong );
+	sequence[0].push_back( s_teleport );
+	sequence[1].push_back( s_active );
+	sequence[1].push_back( s_bunny );
+	sequence[1].push_back( s_monster );
+	sequence[2].push_back( s_invisible );
+}
+
 void Helper::InitItemNamesVector ()
 {
     ItemNames = new NamesVector;

@@ -48,7 +48,6 @@ void MainWindow::StartInit()
 
   toolMapper = new QSignalMapper( this );
   Helper * helper = Helper::Instance ();
-  pNamesVector names = helper->GetItemNames ();
   QPushButton * button = new QPushButton;
   button->setIcon( QIcon(":/cursor") );
   button->setCheckable( true );
@@ -60,20 +59,34 @@ void MainWindow::StartInit()
   toolMapper->setMapping( button, button );
   ui->mainToolBar->addWidget( button );
   button = NULL;
-  for( size_t i = 0; i < names->size(); i++ )
-  {
-    QPushButton * button = new QPushButton;
-    button->setIcon( QIcon(":/" + (*names)[i]) );
-    button->setCheckable( true );
-    button->setFixedSize( 50, 50 );
-    button->setIconSize(QSize(40, 40));
-    button->setFlat( true );
-    button->setObjectName( (*names)[i] );
-    connect( button, SIGNAL(clicked()), toolMapper, SLOT( map() ) ); 
-    toolMapper->setMapping( button, button );
-    ui->mainToolBar->addWidget( button );
-    button = NULL;
-  }
+	std::map< int, vector< state > > sequence;
+	Helper::TBInitSequence( sequence );
+	std::map< int, vector< state > >::const_iterator it;
+
+	int last_key = -1;
+	for( it = sequence.begin(); it != sequence.end(); ++it )
+	{
+		if( last_key != it->first )
+		{
+			last_key = it->first;
+			ui->mainToolBar->addSeparator();
+		}
+		for( int i = 0; i < it->second.size(); ++i )
+		{
+			QPushButton * button = new QPushButton;
+			QString fname = helper->GetItemNameByState( it->second[i] );
+			button->setIcon( QIcon(":/" + fname ) );
+			button->setCheckable( true );
+			button->setFixedSize( 50, 50 );
+			button->setIconSize(QSize(40, 40));
+			button->setFlat( true );
+			button->setObjectName( fname );
+			connect( button, SIGNAL(clicked()), toolMapper, SLOT( map() ) ); 
+			toolMapper->setMapping( button, button );
+			ui->mainToolBar->addWidget( button );
+			button = NULL;
+		}
+	}
   bool ret = connect(toolMapper, SIGNAL(mapped(QWidget*)),
     this, SLOT(ToolsClicked(QWidget*)));
 

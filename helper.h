@@ -3,7 +3,7 @@
 
 #include <QString>
 #include <vector>
-
+#include <map>
 using std::vector;
 
 #define GetVarName(var) #var
@@ -33,7 +33,7 @@ public:
     QString& GetItemNameByState( state st );
     QString& GetItemNameByVisible( bool v, state st );
     pNamesVector GetItemNames();
-
+		static void TBInitSequence( std::map< int, vector< state > > & sequence );
 		static int vnumber;
 		static int hnumber;
 protected:
