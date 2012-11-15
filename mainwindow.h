@@ -38,16 +38,6 @@ public:
 
 public slots:
     void labelClicked( QWidget * wdg );
-    void RBOriginalClicked();
-    void RBActiveClicked();
-    void RBBlockClicked();
-    void RBBombClicked();
-    void RBBunnyClicked();
-    void RBFireClicked();
-    void RBMonsterClicked();
-    void RBStrongClicked();
-    void RBTeleportClicked();
-    void CBVisibleClicked();
     void SBTimerValueChanged( int val );
     void OpenFileButtonClicked();
     void SaveFileButtonClicked();
@@ -58,7 +48,7 @@ private:
     void StartInit();
     void Init();
     void Init( QString &filename );
-		void SetupParamsDialog();
+		bool SetupParamsDialog();
     void PropertiesLogic( state st );
     void SetupWidgets();
     void ResetWidgets();

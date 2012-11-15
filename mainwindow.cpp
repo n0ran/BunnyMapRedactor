@@ -44,10 +44,17 @@ void MainWindow::StartInit()
   ui->mainToolBar->addWidget( ui->createFileButton );
   ui->mainToolBar->addWidget( ui->openFileButton );
   ui->mainToolBar->addWidget( ui->saveFileButton );
+
   ui->mainToolBar->addSeparator();
+
+	ui->mainToolBar->addWidget( ui->Number );
+	ui->Number->setFixedSize( 50, 50 );
+	ui->mainToolBar->addWidget( ui->Timer );
+	ui->Timer->setFixedSize( 50, 50 );
 
   toolMapper = new QSignalMapper( this );
   Helper * helper = Helper::Instance ();
+
   QPushButton * button = new QPushButton;
   button->setIcon( QIcon(":/cursor") );
   button->setCheckable( true );
@@ -57,8 +64,10 @@ void MainWindow::StartInit()
   button->setFlat( true );
   connect( button, SIGNAL(clicked()), toolMapper, SLOT( map() ) ); 
   toolMapper->setMapping( button, button );
+
   ui->mainToolBar->addWidget( button );
   button = NULL;
+
 	std::map< int, vector< state > > sequence;
 	Helper::TBInitSequence( sequence );
 	std::map< int, vector< state > >::const_iterator it;
@@ -90,16 +99,6 @@ void MainWindow::StartInit()
   bool ret = connect(toolMapper, SIGNAL(mapped(QWidget*)),
     this, SLOT(ToolsClicked(QWidget*)));
 
-  connect( ui->IsOriginal , SIGNAL(clicked()), this, SLOT(RBOriginalClicked() ) );
-  connect( ui->IsActive   , SIGNAL(clicked()), this, SLOT(RBActiveClicked()   ) );
-  connect( ui->IsBlock    , SIGNAL(clicked()), this, SLOT(RBBlockClicked()    ) );
-  connect( ui->IsBomb     , SIGNAL(clicked()), this, SLOT(RBBombClicked()     ) );
-  connect( ui->IsBunny    , SIGNAL(clicked()), this, SLOT(RBBunnyClicked()    ) );
-  connect( ui->IsFire     , SIGNAL(clicked()), this, SLOT(RBFireClicked()     ) );
-  connect( ui->IsMonster  , SIGNAL(clicked()), this, SLOT(RBMonsterClicked()  ) );
-  connect( ui->IsStrong   , SIGNAL(clicked()), this, SLOT(RBStrongClicked()   ) );
-  connect( ui->IsTeleport , SIGNAL(clicked()), this, SLOT(RBTeleportClicked() ) );
-  connect( ui->Visible    , SIGNAL(clicked()), this, SLOT(CBVisibleClicked()  ) );
   connect( ui->Timer      , SIGNAL(valueChanged(int)), this, SLOT(SBTimerValueChanged( int )  ) );
   connect( ui->openFileButton, SIGNAL(clicked()), this, SLOT( OpenFileButtonClicked() ) );
   connect( ui->saveFileButton, SIGNAL(clicked()), this, SLOT( SaveFileButtonClicked() ) );
@@ -111,7 +110,6 @@ void MainWindow::Init()
 {
   StartInit();
   plst.clear();
-	SetupParamsDialog();
   plst.initArray( this );
   SetupWidgets ();
 }
@@ -124,15 +122,16 @@ void MainWindow::Init( QString &filename )
   SetupWidgets ();
 }
 
-void MainWindow::SetupParamsDialog()
+bool MainWindow::SetupParamsDialog()
 {
 	MapSizeDialog msd;
 	if( msd.exec() == QDialog::Accepted )
 	{
 		plst.SetWidth( msd.GetWidth() );
 		plst.SetHeight( msd.GetHeight() );
+		return true;
 	}
-	
+	return false;
 }
 
 void MainWindow::SetupWidgets ()
@@ -269,25 +268,6 @@ void MainWindow::ToolsClicked( QWidget * wdg )
   }
 
 };
-void MainWindow::RBOriginalClicked(){   PropertiesLogic( s_original );  }
-void MainWindow::RBActiveClicked()  {   PropertiesLogic( s_active   );  }
-void MainWindow::RBBlockClicked()   {   PropertiesLogic( s_block    );  }
-void MainWindow::RBBombClicked()    {   PropertiesLogic( s_bomb     );  }
-void MainWindow::RBBunnyClicked()   {   PropertiesLogic( s_bunny    );  }
-void MainWindow::RBFireClicked()    {   PropertiesLogic( s_fire     );  }
-void MainWindow::RBMonsterClicked() {   PropertiesLogic( s_monster  );  }
-void MainWindow::RBStrongClicked()  {   PropertiesLogic( s_strong   );  }
-void MainWindow::RBTeleportClicked(){   PropertiesLogic( s_teleport );  }
-
-void MainWindow::CBVisibleClicked()
-{
-  if( !LastChecked || curItemIndex < 0 )
-    return;
-
-  cell * item = plst.getItem( curItemIndex );
-  item->isVisible = ui->Visible->isChecked();
-  item->UpdateView();
-}
 
 void MainWindow::SBTimerValueChanged( int val )
 {
@@ -313,7 +293,8 @@ void MainWindow::OpenFileButtonClicked()
 
 void MainWindow::CreateFileButtonClicked()
 {
-  ResetWidgets();
+	if( SetupParamsDialog() )
+		ResetWidgets();
 }
 
 void MainWindow::SaveFileButtonClicked()
@@ -349,38 +330,6 @@ void MainWindow::UpdateControls()
 {
   const cell * pcell = plst.getItem( curItemIndex );
   state hextype = pcell->hextype;
-  ui->Visible->setChecked( pcell->isVisible );
   ui->Timer->setEnabled( hextype == s_bomb );
   ui->Timer->setValue( pcell->timer );
-  switch( hextype )
-  {
-  case s_original : 
-    ui->IsOriginal->setChecked( true );
-    return;
-  case s_bunny    : 
-    ui->IsBunny->setChecked( true );
-    return;
-  case s_active   :
-    ui->IsActive->setChecked( true );
-    return;
-  case s_bomb     : 
-    ui->IsBomb->setChecked( true );
-    return;
-  case s_fire     : 
-    ui->IsFire->setChecked( true );
-    return;
-  case s_block    : 
-    ui->IsBlock->setChecked( true );
-    return;
-  case s_strong   : 
-    ui->IsStrong->setChecked( true );
-    return;
-  case s_teleport : 
-    ui->IsTeleport->setChecked( true );
-    return;
-  case s_monster  : 
-    ui->IsMonster->setChecked( true );
-    return;
-  }
 }
-//ui->MapItems->currentIndex()

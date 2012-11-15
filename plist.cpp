@@ -219,6 +219,7 @@ void cell::UpdateView()
 	else
 	{
 		button->setIcon( QIcon(":/" + help->GetItemNameByVisible( isVisible, hextype ) ) );
+		//button->setText( "1" );
 	}
 }                                                                           
 
