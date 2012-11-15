@@ -179,6 +179,9 @@ void cell::setState( state ht )
 		else
 			unit = s_original;
 		break;
+	case s_invisible:
+		isVisible = !isVisible;
+		break;
 	default:
 		hextype = ht;
 	}

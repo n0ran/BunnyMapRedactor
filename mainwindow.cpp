@@ -209,6 +209,7 @@ void MainWindow::ToolAction( cell * item )
   case set_strong   : st = s_strong   ; break;
   case set_teleport : st = s_teleport ; break;
   case set_monster  : st = s_monster  ; break;
+	case set_visibility : st = s_invisible; break;
   }
 	item->setState( st );
 }
@@ -250,6 +251,8 @@ void MainWindow::ToolsClicked( QWidget * wdg )
       tool_action = set_teleport;
     else if( objname == helper->GetItemNameByState( s_monster ) )
       tool_action = set_monster;
+		else if( objname == helper->GetItemNameByState( s_invisible ) )
+			tool_action = set_visibility;
   }
 
 };
@@ -262,6 +265,7 @@ void MainWindow::RBFireClicked()    {   PropertiesLogic( s_fire     );  }
 void MainWindow::RBMonsterClicked() {   PropertiesLogic( s_monster  );  }
 void MainWindow::RBStrongClicked()  {   PropertiesLogic( s_strong   );  }
 void MainWindow::RBTeleportClicked(){   PropertiesLogic( s_teleport );  }
+
 void MainWindow::CBVisibleClicked()
 {
   if( !LastChecked || curItemIndex < 0 )
@@ -271,6 +275,7 @@ void MainWindow::CBVisibleClicked()
   item->isVisible = ui->Visible->isChecked();
   item->UpdateView();
 }
+
 void MainWindow::SBTimerValueChanged( int val )
 {
   if( !LastChecked || curItemIndex < 0 )

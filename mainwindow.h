@@ -29,7 +29,8 @@ public:
       set_block,
       set_strong,
       set_teleport,
-      set_monster
+      set_monster,
+			set_visibility
     };
 
     explicit MainWindow(QWidget *parent = 0);
