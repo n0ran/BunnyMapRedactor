@@ -39,6 +39,7 @@ public:
 public slots:
     void labelClicked( QWidget * wdg );
     void SBTimerValueChanged( int val );
+		void SBStepsValueChanged( int val );
     void OpenFileButtonClicked();
     void SaveFileButtonClicked();
     void CreateFileButtonClicked();
@@ -54,13 +55,13 @@ private:
     void ResetWidgets();
     void ResetWidgets( QString &filename );
     void UpdateControls();
-    void ToolAction( cell * item );
+    void ToolAction( CCell * item );
     QPushButton * LastChecked;
     long  curItemIndex;
     QSignalMapper * signalMapper;
     QSignalMapper * toolMapper;
     Ui::MainWindow * ui;
-    plist plst;
+    CPlist plst;
 
     toolsButtonAction tool_action;
     QPushButton * lastToolClicked;

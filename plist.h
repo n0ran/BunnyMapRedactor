@@ -9,11 +9,11 @@
 #include <QFile>
 using std::map;
 
-class cell
+class CCell
 {
 public:
-  cell( int ind, state htype = s_original, state unt = s_original, int tmr = -1, bool vsbl = true );
-  ~cell();
+  CCell( int ind, state htype = s_original, state unt = s_original, int tmr = -1, bool vsbl = true );
+  ~CCell();
 
   void setState( state ht );
   void UpdateView();
@@ -29,41 +29,45 @@ public:
   QPushButton * button;
 };
 
-class parametres
+class CParametres
 {
 public:
-  parametres();
+  CParametres();
   bool Serialize( QTextStream * out, int &level );
 	void SetHorizontalNumber( int n );
 	void SetVerticalNumber( int n );
+	void SetSteps( int n );
 public:
-  int horizontalNumber;
-  int verticalNumber;
+  int _horizontalNumber;
+  int _verticalNumber;
+	int _steps;
 };
 
 ;
 
-class plist
+class CPlist
 {
 public:
-  plist( int w = 9, int h = 5 );
-  ~plist(void);
+  CPlist( int w = 9, int h = 5 );
+  ~CPlist(void);
 
   void initArray( QMainWindow * mWnd = NULL );
   void initArray( QMainWindow * mWnd, QString &filename );
-  cell * getItem( int index );
-  void addItem( cell * pcell );
+  CCell * getItem( int index );
+  void addItem( CCell * pcell );
   int GetButtonIndex( QPushButton * button );
   bool Serialize( QTextStream * out, int &level );
   bool SaveInFile( QString filename );
 	int	GetWidth();
 	int GetHeight();
+	int GetSteps();
 	void SetWidth( int w );
 	void SetHeight( int h );
+	void SetSteps( int s );
   void clear();
 private:
-  map< int, cell* > arr;
-  parametres params;
+  map< int, CCell* > arr;
+  CParametres params;
 };
 
 #endif

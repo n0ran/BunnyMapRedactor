@@ -31,6 +31,7 @@ enum keyValues {
   teleport,
   visible,
   parametres = 30,
+	steps,
   horizontalNumber,
   verticalNumber,
   Dict = 40,
@@ -61,7 +62,7 @@ private:
 class xmlReader : public QXmlDefaultHandler
 {
 public:
-  xmlReader( plist * lst );
+  xmlReader( CPlist * lst );
 
   virtual bool startElement( 
     const QString &namespaceURI,
@@ -85,22 +86,22 @@ private:
   QString currentText;
   keyValues lastKey;
   keyValues lastVal;
-  plist * pplist;
+  CPlist * pplist;
   bool isArray;
-  cell  * pcell;
+  CCell  * pcell;
 };
 
 class xmlWriter 
 {
 public:
-  xmlWriter( plist * lst, QString filename );
+  xmlWriter( CPlist * lst, QString filename );
   ~xmlWriter();
   bool SaveFile();
 
 private:
   QFile * file;
   QTextStream * out;
-  plist * pplist;
+  CPlist * pplist;
 };
 
 #endif //_XML_PARSER_H__

@@ -1,7 +1,7 @@
 /********************************************************************************
 ** Form generated from reading UI file 'mainwindow.ui'
 **
-** Created: Thu 15. Nov 20:33:23 2012
+** Created: Tue 5. Feb 20:52:38 2013
 **      by: Qt User Interface Compiler version 4.8.2
 **
 ** WARNING! All changes made in this file will be lost when recompiling UI file!
@@ -39,6 +39,7 @@ public:
     QPushButton *createFileButton;
     QLineEdit *Number;
     QSpinBox *Timer;
+    QSpinBox *Steps;
     QMenuBar *menuBar;
     QToolBar *mainToolBar;
 
@@ -94,7 +95,12 @@ public:
         createFileButton->setFlat(true);
         Number = new QLineEdit(centralWidget);
         Number->setObjectName(QString::fromUtf8("Number"));
-        Number->setGeometry(QRect(170, -20, 50, 50));
+        Number->setGeometry(QRect(220, -20, 45, 50));
+        QSizePolicy sizePolicy1(QSizePolicy::Fixed, QSizePolicy::Fixed);
+        sizePolicy1.setHorizontalStretch(0);
+        sizePolicy1.setVerticalStretch(0);
+        sizePolicy1.setHeightForWidth(Number->sizePolicy().hasHeightForWidth());
+        Number->setSizePolicy(sizePolicy1);
         QFont font;
         font.setFamily(QString::fromUtf8("Arial Black"));
         font.setPointSize(12);
@@ -106,10 +112,21 @@ public:
         Timer = new QSpinBox(centralWidget);
         Timer->setObjectName(QString::fromUtf8("Timer"));
         Timer->setEnabled(false);
-        Timer->setGeometry(QRect(230, -20, 50, 50));
+        Timer->setGeometry(QRect(270, -20, 45, 50));
+        sizePolicy1.setHeightForWidth(Timer->sizePolicy().hasHeightForWidth());
+        Timer->setSizePolicy(sizePolicy1);
         Timer->setFont(font);
         Timer->setMinimum(-1);
         Timer->setValue(-1);
+        Steps = new QSpinBox(centralWidget);
+        Steps->setObjectName(QString::fromUtf8("Steps"));
+        Steps->setEnabled(true);
+        Steps->setGeometry(QRect(170, -20, 45, 50));
+        sizePolicy1.setHeightForWidth(Steps->sizePolicy().hasHeightForWidth());
+        Steps->setSizePolicy(sizePolicy1);
+        Steps->setFont(font);
+        Steps->setMinimum(1);
+        Steps->setValue(10);
         MainWindow->setCentralWidget(centralWidget);
         menuBar = new QMenuBar(MainWindow);
         menuBar->setObjectName(QString::fromUtf8("menuBar"));

@@ -7,7 +7,7 @@
     <x>0</x>
     <y>0</y>
     <width>179</width>
-    <height>127</height>
+    <height>157</height>
    </rect>
   </property>
   <property name="windowTitle">
@@ -17,7 +17,7 @@
    <property name="geometry">
     <rect>
      <x>10</x>
-     <y>100</y>
+     <y>130</y>
      <width>156</width>
      <height>23</height>
     </rect>
@@ -32,7 +32,7 @@
      <x>10</x>
      <y>10</y>
      <width>160</width>
-     <height>80</height>
+     <height>110</height>
     </rect>
    </property>
    <property name="title">
@@ -79,6 +79,29 @@
      <rect>
       <x>100</x>
       <y>19</y>
+      <width>42</width>
+      <height>22</height>
+     </rect>
+    </property>
+   </widget>
+   <widget class="QLabel" name="label_3">
+    <property name="geometry">
+     <rect>
+      <x>20</x>
+      <y>80</y>
+      <width>80</width>
+      <height>20</height>
+     </rect>
+    </property>
+    <property name="text">
+     <string>Кол-во шагов</string>
+    </property>
+   </widget>
+   <widget class="QSpinBox" name="stepsNum">
+    <property name="geometry">
+     <rect>
+      <x>100</x>
+      <y>80</y>
       <width>42</width>
       <height>22</height>
      </rect>

@@ -1,7 +1,7 @@
 /********************************************************************************
 ** Form generated from reading UI file 'mapsizedialog.ui'
 **
-** Created: Thu 15. Nov 20:33:23 2012
+** Created: Tue 5. Feb 20:29:42 2013
 **      by: Qt User Interface Compiler version 4.8.2
 **
 ** WARNING! All changes made in this file will be lost when recompiling UI file!
@@ -32,19 +32,21 @@ public:
     QLabel *label;
     QSpinBox *vertNum;
     QSpinBox *horNum;
+    QLabel *label_3;
+    QSpinBox *stepsNum;
 
     void setupUi(QWidget *MapSizeDialog)
     {
         if (MapSizeDialog->objectName().isEmpty())
             MapSizeDialog->setObjectName(QString::fromUtf8("MapSizeDialog"));
-        MapSizeDialog->resize(179, 127);
+        MapSizeDialog->resize(179, 157);
         buttonBox = new QDialogButtonBox(MapSizeDialog);
         buttonBox->setObjectName(QString::fromUtf8("buttonBox"));
-        buttonBox->setGeometry(QRect(10, 100, 156, 23));
+        buttonBox->setGeometry(QRect(10, 130, 156, 23));
         buttonBox->setStandardButtons(QDialogButtonBox::Cancel|QDialogButtonBox::Ok);
         groupBox = new QGroupBox(MapSizeDialog);
         groupBox->setObjectName(QString::fromUtf8("groupBox"));
-        groupBox->setGeometry(QRect(10, 10, 160, 80));
+        groupBox->setGeometry(QRect(10, 10, 160, 110));
         label_2 = new QLabel(groupBox);
         label_2->setObjectName(QString::fromUtf8("label_2"));
         label_2->setGeometry(QRect(20, 50, 80, 20));
@@ -57,6 +59,12 @@ public:
         horNum = new QSpinBox(groupBox);
         horNum->setObjectName(QString::fromUtf8("horNum"));
         horNum->setGeometry(QRect(100, 19, 42, 22));
+        label_3 = new QLabel(groupBox);
+        label_3->setObjectName(QString::fromUtf8("label_3"));
+        label_3->setGeometry(QRect(20, 80, 80, 20));
+        stepsNum = new QSpinBox(groupBox);
+        stepsNum->setObjectName(QString::fromUtf8("stepsNum"));
+        stepsNum->setGeometry(QRect(100, 80, 42, 22));
 
         retranslateUi(MapSizeDialog);
 
@@ -69,6 +77,7 @@ public:
         groupBox->setTitle(QApplication::translate("MapSizeDialog", "\320\237\320\260\321\200\320\260\320\274\320\265\321\202\321\200\321\213 \320\272\320\260\321\200\321\202\321\213", 0, QApplication::UnicodeUTF8));
         label_2->setText(QApplication::translate("MapSizeDialog", "\320\222\321\213\321\201\320\276\321\202\320\260", 0, QApplication::UnicodeUTF8));
         label->setText(QApplication::translate("MapSizeDialog", "\320\250\320\270\321\200\320\270\320\275\320\260", 0, QApplication::UnicodeUTF8));
+        label_3->setText(QApplication::translate("MapSizeDialog", "\320\232\320\276\320\273-\320\262\320\276 \321\210\320\260\320\263\320\276\320\262", 0, QApplication::UnicodeUTF8));
     } // retranslateUi
 
 };

@@ -24,29 +24,29 @@ int GetButtonHeight()
 	return (int)val;
 }
 
-plist::plist( int w, int h )
+CPlist::CPlist( int w, int h )
 {
 	params.SetHorizontalNumber( w );
 	params.SetVerticalNumber( h );
 }
 
-plist::~plist(void)
+CPlist::~CPlist(void)
 {
 
 }
 
-void plist::initArray( QMainWindow * mWnd )
+void CPlist::initArray( QMainWindow * mWnd )
 {
   int col = 0;
-  for( int i = 0; i < params.verticalNumber * params.horizontalNumber;  )
+  for( int i = 0; i < params._verticalNumber * params._horizontalNumber;  )
   {
-    int num = (col%2 == 0) ? params.verticalNumber-1 : params.verticalNumber;
-    if( num == params.verticalNumber-1 )
+    int num = (col%2 == 0) ? params._verticalNumber-1 : params._verticalNumber;
+    if( num == params._verticalNumber-1 )
       i++;
     for( int k = 0; k < num; k++, i++ )
     {
-      int ind = (col+1)*params.verticalNumber - (k + 1);
-      cell * item = new cell(ind);
+      int ind = (col+1)*params._verticalNumber - (k + 1);
+      CCell * item = new CCell(ind);
       item->initButton( mWnd );
       arr[ind] = item;
     }
@@ -54,7 +54,7 @@ void plist::initArray( QMainWindow * mWnd )
   }
 }
 
-void plist::initArray( QMainWindow * mWnd, QString &filename )
+void CPlist::initArray( QMainWindow * mWnd, QString &filename )
 {
   QFile file( filename );
   QXmlInputSource inputSource( &file );
@@ -64,16 +64,16 @@ void plist::initArray( QMainWindow * mWnd, QString &filename )
   reader.setErrorHandler( &handler );
   reader.parse( inputSource );
 
-  std::map< int, cell* >::const_iterator it;
+  std::map< int, CCell* >::const_iterator it;
   for( it = arr.begin(); it != arr.end(); ++it )
   {
     it->second->initButton( mWnd );
   }
 }
 
-int plist::GetButtonIndex( QPushButton * button )
+int CPlist::GetButtonIndex( QPushButton * button )
 {
-  map< int, cell*>::const_iterator it;
+  map< int, CCell*>::const_iterator it;
   for( it = arr.begin(); it != arr.end(); ++it )
   {
     if( it->second->button == button )
@@ -84,22 +84,22 @@ int plist::GetButtonIndex( QPushButton * button )
 }
 
 
-cell* plist::getItem( int index )
+CCell* CPlist::getItem( int index )
 {
   return arr[index];
 }
 
-void plist::addItem( cell * pcell )
+void CPlist::addItem( CCell * pcell )
 {
   arr[pcell->index] = pcell;
 }
 
-void plist::clear()
+void CPlist::clear()
 {
   arr.clear();
 }
 
-bool plist::Serialize( QTextStream * out, int &level )
+bool CPlist::Serialize( QTextStream * out, int &level )
 {
   xmlHelper * helper = xmlHelper::Instance();
   StreamWrite( out, "<plist version=\"1.0\">" );
@@ -107,7 +107,7 @@ bool plist::Serialize( QTextStream * out, int &level )
   StreamWrite( out, xmlHelper::wrapKeyValInKeyVal( key, hexs ) );
 
   StreamWriteLevUp( out, oTag( helper->getStringByKeyDef(Array) ) );
-  map< int, cell* >::const_iterator it;
+  map< int, CCell* >::const_iterator it;
   for( it = arr.begin(); it != arr.end(); ++it )
   {
     it->second->Serialize( out, level );
@@ -124,34 +124,44 @@ bool plist::Serialize( QTextStream * out, int &level )
 }
 
 
-bool plist::SaveInFile( QString filename )
+bool CPlist::SaveInFile( QString filename )
 {
   xmlWriter wr( this, filename );
   return wr.SaveFile();
 }
 
-int plist::GetWidth()
+int CPlist::GetWidth()
 {
-	return params.horizontalNumber;
+	return params._horizontalNumber;
 }
 
-int plist::GetHeight()
+int CPlist::GetHeight()
 {
-	return params.verticalNumber;
+	return params._verticalNumber;
 }
 
-void plist::SetWidth( int w )
+int CPlist::GetSteps()
+{
+	return params._steps;
+}
+
+void CPlist::SetWidth( int w )
 {
 	params.SetHorizontalNumber( w );
 }
 
-void plist::SetHeight( int h )
+void CPlist::SetHeight( int h )
 {
 	params.SetVerticalNumber( h );
 }
+
+void CPlist::SetSteps( int s )
+{
+	params.SetSteps( s );
+}
 ///////////////////////////////////////////////////////////////////////////
 
-cell::cell( int ind, state htype /* = original */, state unt /* = original */, int tmr /* = -1 */, bool vsbl /* = true */ ) :
+CCell::CCell( int ind, state htype /* = original */, state unt /* = original */, int tmr /* = -1 */, bool vsbl /* = true */ ) :
     hextype ( htype   ),
 		unit	( unt ),
     timer   ( tmr     ),
@@ -161,13 +171,13 @@ cell::cell( int ind, state htype /* = original */, state unt /* = original */, i
 {
 }
 
-cell::~cell()
+CCell::~CCell()
 {
   if( button )
     delete button;
 }
 
-void cell::setState( state ht )
+void CCell::setState( state ht )
 {
 	switch( ht )
 	{
@@ -188,7 +198,7 @@ void cell::setState( state ht )
 
 }
 
-void cell::initButton( QMainWindow * mWnd )
+void CCell::initButton( QMainWindow * mWnd )
 {
   Helper * help = Helper::Instance();
   button = new QPushButton( QIcon(":/" + help->GetItemNameByState( hextype )), "",  mWnd );
@@ -199,7 +209,7 @@ void cell::initButton( QMainWindow * mWnd )
   button->setCheckable(true);
 }
 
-void cell::UpdateView()
+void CCell::UpdateView()
 {
   Helper * help = Helper::Instance();
 
@@ -223,7 +233,7 @@ void cell::UpdateView()
 	}
 }                                                                           
 
-bool cell::Serialize( QTextStream * out, int &level )
+bool CCell::Serialize( QTextStream * out, int &level )
 {
   xmlHelper * helper = xmlHelper::Instance();
   StreamWriteLevUp( out, oTag( helper->getStringByKeyDef(Dict) ) );
@@ -263,35 +273,46 @@ bool cell::Serialize( QTextStream * out, int &level )
 
 ///////////////////////////////////////////////////////////////////////////
 
-parametres::parametres()
+CParametres::CParametres()
 {
+	SetSteps(0);
+	SetHorizontalNumber(9);
+	SetVerticalNumber(5);
 }
-bool parametres::Serialize( QTextStream * out, int &level )
+bool CParametres::Serialize( QTextStream * out, int &level )
 {
   xmlHelper * helper = xmlHelper::Instance();
   
-  StreamWrite( out, xmlHelper::wrapKeyValInKeyVal( key, keyValues::parametres ) );
+  StreamWrite( out, xmlHelper::wrapKeyValInKeyVal( key, parametres ) );
 
   StreamWriteLevUp( out, oTag( helper->getStringByKeyDef(Dict) ) );
 
-  StreamWrite( out, xmlHelper::wrapKeyValInKeyVal( key, keyValues::horizontalNumber) );
-  StreamWrite( out, xmlHelper::wrapStringInKeyVal( Integer, xmlHelper::getStringByInteger(horizontalNumber)) );
+	StreamWrite( out, xmlHelper::wrapKeyValInKeyVal( key, steps) );
+	StreamWrite( out, xmlHelper::wrapStringInKeyVal( Integer, xmlHelper::getStringByInteger(_steps)) );
 
-  StreamWrite( out, xmlHelper::wrapKeyValInKeyVal( key, keyValues::verticalNumber) );
-  StreamWrite( out, xmlHelper::wrapStringInKeyVal( Integer, xmlHelper::getStringByInteger(verticalNumber)) );
+  StreamWrite( out, xmlHelper::wrapKeyValInKeyVal( key, horizontalNumber) );
+  StreamWrite( out, xmlHelper::wrapStringInKeyVal( Integer, xmlHelper::getStringByInteger(_horizontalNumber)) );
+
+  StreamWrite( out, xmlHelper::wrapKeyValInKeyVal( key, verticalNumber) );
+  StreamWrite( out, xmlHelper::wrapStringInKeyVal( Integer, xmlHelper::getStringByInteger(_verticalNumber)) );
 
   StreamWriteLevDown( out, cTag( helper->getStringByKeyDef(Dict) ) );
   return true;
 }
 
-void parametres::SetHorizontalNumber( int n )
+void CParametres::SetHorizontalNumber( int n )
 {
-	horizontalNumber = n;
-	Helper::hnumber = horizontalNumber;
+	_horizontalNumber = n;
+	Helper::hnumber = _horizontalNumber;
 }
 
-void parametres::SetVerticalNumber( int n )
+void CParametres::SetVerticalNumber( int n )
 {
-	verticalNumber = n;
-	Helper::vnumber = verticalNumber;
+	_verticalNumber = n;
+	Helper::vnumber = _verticalNumber;
+}
+
+void CParametres::SetSteps( int n )
+{
+	_steps = n;
 }

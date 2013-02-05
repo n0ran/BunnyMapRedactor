@@ -47,10 +47,12 @@ void MainWindow::StartInit()
 
   ui->mainToolBar->addSeparator();
 
+	ui->mainToolBar->addWidget( ui->Steps );
+	ui->Steps->setFixedSize( 45, 50 );
 	ui->mainToolBar->addWidget( ui->Number );
-	ui->Number->setFixedSize( 50, 50 );
+	ui->Number->setFixedSize( 45, 50 );
 	ui->mainToolBar->addWidget( ui->Timer );
-	ui->Timer->setFixedSize( 50, 50 );
+	ui->Timer->setFixedSize( 45, 50 );
 
   toolMapper = new QSignalMapper( this );
   Helper * helper = Helper::Instance ();
@@ -99,10 +101,11 @@ void MainWindow::StartInit()
   bool ret = connect(toolMapper, SIGNAL(mapped(QWidget*)),
     this, SLOT(ToolsClicked(QWidget*)));
 
-  connect( ui->Timer      , SIGNAL(valueChanged(int)), this, SLOT(SBTimerValueChanged( int )  ) );
-  connect( ui->openFileButton, SIGNAL(clicked()), this, SLOT( OpenFileButtonClicked() ) );
-  connect( ui->saveFileButton, SIGNAL(clicked()), this, SLOT( SaveFileButtonClicked() ) );
-  connect( ui->createFileButton, SIGNAL(clicked()), this, SLOT( CreateFileButtonClicked() ) );
+  connect( ui->Timer						, SIGNAL(valueChanged(int))	, this, SLOT( SBTimerValueChanged( int )  ) );
+	connect( ui->Steps						, SIGNAL(valueChanged(int))	, this, SLOT( SBStepsValueChanged( int )  ) );
+  connect( ui->openFileButton		, SIGNAL(clicked())					, this, SLOT( OpenFileButtonClicked()			) );
+  connect( ui->saveFileButton		, SIGNAL(clicked())					, this, SLOT( SaveFileButtonClicked()			) );
+  connect( ui->createFileButton	, SIGNAL(clicked())					, this, SLOT( CreateFileButtonClicked()		) );
 
 }
 
@@ -129,6 +132,7 @@ bool MainWindow::SetupParamsDialog()
 	{
 		plst.SetWidth( msd.GetWidth() );
 		plst.SetHeight( msd.GetHeight() );
+		plst.SetSteps( msd.GetSteps() );
 		return true;
 	}
 	return false;
@@ -158,7 +162,7 @@ void MainWindow::SetupWidgets ()
       for( int k = 0; k < num; k++, i++ )
       {
         int ind = (col+1)*plst.GetHeight() - (k + 1);
-				cell * item = plst.getItem( ind );
+				CCell * item = plst.getItem( ind );
         QPushButton * button = item->button;
         vertLayout->addWidget( button );
         
@@ -171,6 +175,8 @@ void MainWindow::SetupWidgets ()
     }
     connect(signalMapper, SIGNAL(mapped(QWidget*)),
             this, SLOT(labelClicked(QWidget*)));
+
+		ui->Steps->setValue( plst.GetSteps() );
 }
 
 void MainWindow::ResetWidgets()
@@ -199,12 +205,12 @@ void MainWindow::labelClicked( QWidget * wdg )
     curItemIndex = plst.GetButtonIndex( button );
     ui->Number->setText( QString::number( plst.getItem( curItemIndex )->index ) );
   }
-  cell * item = plst.getItem( curItemIndex );
+  CCell * item = plst.getItem( curItemIndex );
   ToolAction( item );
   item->UpdateView();
   UpdateControls();
 }
-void MainWindow::ToolAction( cell * item )
+void MainWindow::ToolAction( CCell * item )
 {
   state st;
   switch( tool_action )
@@ -274,10 +280,15 @@ void MainWindow::SBTimerValueChanged( int val )
   if( !LastChecked || curItemIndex < 0 )
     return;
 
-  cell * item = plst.getItem( curItemIndex );
+  CCell * item = plst.getItem( curItemIndex );
   if( item->hextype == s_bomb )
     item->timer = ui->Timer->value();
   item->UpdateView();
+}
+
+void MainWindow::SBStepsValueChanged( int val )
+{
+	plst.SetSteps( val );
 }
 
 void MainWindow::OpenFileButtonClicked()
@@ -313,7 +324,7 @@ void MainWindow::PropertiesLogic( state st )
   if( !LastChecked || curItemIndex < 0 )
     return;
 
-  cell * item = plst.getItem( curItemIndex );
+  CCell * item = plst.getItem( curItemIndex );
   if( item->hextype != st && item->hextype == s_bomb )
   {
     item->timer = -1;
@@ -328,7 +339,7 @@ void MainWindow::PropertiesLogic( state st )
 
 void MainWindow::UpdateControls()
 {
-  const cell * pcell = plst.getItem( curItemIndex );
+  const CCell * pcell = plst.getItem( curItemIndex );
   state hextype = pcell->hextype;
   ui->Timer->setEnabled( hextype == s_bomb );
   ui->Timer->setValue( pcell->timer );

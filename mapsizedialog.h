@@ -21,9 +21,7 @@ public:
 
 	int GetWidth();
 	int GetHeight();
-//public slots:
-//	virtual void accept();
-//	virtual void reject();
+	int GetSteps();
 private:
 	Ui::MapSizeDialog ui;
 };

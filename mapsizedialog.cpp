@@ -20,23 +20,15 @@ void MapSizeDialog::Init()
 	 ui.horNum->setMinimum( 5 );
 	 ui.horNum->setMaximum( 21 );
 	 ui.horNum->setValue( 9 );
-
+	 ui.stepsNum->setMinimum( 0 );
+	 ui.stepsNum->setMaximum( 99999 );
+	 ui.stepsNum->setValue( 20 );
 	 setWindowModality( Qt::WindowModal );
 	 setFixedSize( width(), height() );
 
 	 connect(ui.buttonBox, SIGNAL(accepted()), this, SLOT(accept()));
 	 connect(ui.buttonBox, SIGNAL(rejected()), this, SLOT(reject()));
 }
-//void MapSizeDialog::accept()
-//{
-//	this->close();
-//	QDialog::
-//}
-//
-//void MapSizeDialog::reject()
-//{
-//	this->close();
-//}
 
 int MapSizeDialog::GetHeight()
 {
@@ -46,4 +38,9 @@ int MapSizeDialog::GetHeight()
 int MapSizeDialog::GetWidth()
 {
 	return ui.horNum->value();
+}
+
+int MapSizeDialog::GetSteps()
+{
+	return ui.stepsNum->value();
 }

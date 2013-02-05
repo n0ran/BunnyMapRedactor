@@ -42,6 +42,7 @@ void xmlHelper::initDictionary()
   keyDictionary[strong          ] = new QString( "strong"           );
   keyDictionary[teleport        ] = new QString( "teleport"         );
   keyDictionary[visible         ] = new QString( "visible"          );
+	keyDictionary[steps						] = new QString( "steps"						);
   keyDictionary[parametres      ] = new QString( "parametres"       );
   keyDictionary[horizontalNumber] = new QString( "horizontalNumber" );
   keyDictionary[verticalNumber  ] = new QString( "verticalNumber"   );
@@ -113,7 +114,7 @@ QString xmlHelper::getStringByInteger( int val )
 
 ///////////////////////////////////////////////////////////////////////////
 
-xmlReader::xmlReader( plist * plst):
+xmlReader::xmlReader( CPlist * plst):
 pplist( plst ),
   isArray( false ),
   pcell( NULL )
@@ -136,7 +137,7 @@ bool xmlReader::startElement(
     break;
   case Dict:
     if( isArray )
-      pcell = new cell(-1);
+      pcell = new CCell(-1);
     break;
   }
 
@@ -230,6 +231,8 @@ bool xmlReader::setParamsValues( keyValues val )
 	case horizontalNumber:
 		pplist->SetWidth( currentText.toInt() );
 		break;
+	case steps:
+		pplist->SetSteps( currentText.toInt() );
 	/*default:
 		break;*/
 	}
@@ -290,7 +293,7 @@ bool xmlReader::setValueByLastKey( keyValues val )
 
 ///////////////////////////////////////////////////////////////////////////
 
-xmlWriter::xmlWriter( plist * lst, QString filename ):
+xmlWriter::xmlWriter( CPlist * lst, QString filename ):
   pplist( lst ),
   out( NULL )
 {
