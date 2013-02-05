@@ -4,7 +4,7 @@
 #
 #-------------------------------------------------
 
-QT       += core gui
+QT       += core gui widgets xml
 
 TARGET = BunnyMapRedactor
 TEMPLATE = app
@@ -12,12 +12,19 @@ TEMPLATE = app
 
 SOURCES += main.cpp\
         mainwindow.cpp \
-    helper.cpp
+    helper.cpp \
+    xml.cpp \
+    plist.cpp \
+    mapsizedialog.cpp
 
 HEADERS  += mainwindow.h \
-    helper.h
+    helper.h \
+    xml.h \
+    plist.h \
+    mapsizedialog.h
 
-FORMS    += mainwindow.ui
+FORMS    += mainwindow.ui \
+    mapsizedialog.ui
 
 RESOURCES += \
     resources.qrc

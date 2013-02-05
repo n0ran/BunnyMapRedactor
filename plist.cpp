@@ -2,7 +2,7 @@
 
 #include <QtCore/QFile>
 #include <QtXml/QXmlInputSource>
-#include <QMessageBox>
+#include <QtWidgets/QMessageBox>
 #include "xml.h"
 #include <QPainter>
 

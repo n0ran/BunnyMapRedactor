@@ -1,8 +1,8 @@
 #ifndef MAPSIZEDIALOG_H
 #define MAPSIZEDIALOG_H
 
-#include <QWidget>
-#include <QDialog>
+#include <QtWidgets/QWidget>
+#include <QtWidgets/QDialog>
 #include "ui_mapsizedialog.h"
 
 namespace Ui {

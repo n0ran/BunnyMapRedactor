@@ -1,9 +1,9 @@
 #ifndef MAINWINDOW_H
 #define MAINWINDOW_H
 
-#include <QMainWindow>
+#include <QtWidgets/QMainWindow>
 #include <QSignalMapper>
-#include <QPushButton>
+#include <QtWidgets/QPushButton>
 #include <map>
 #include "plist.h"
 #include "helper.h"

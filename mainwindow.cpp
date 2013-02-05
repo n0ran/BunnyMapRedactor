@@ -6,9 +6,9 @@
 #include <QStandardItem>
 #include <QStandardItemModel>
 #include <QIcon>
-#include <QMessageBox>
-#include <QPushButton>
-#include <QFileDialog>
+#include <QtWidgets/QMessageBox>
+#include <QtWidgets/QPushButton>
+#include <QtWidgets/QFileDialog>
 
 MainWindow::MainWindow(QWidget *parent) :
     QMainWindow(parent),
@@ -247,7 +247,7 @@ void MainWindow::ToolsClicked( QWidget * wdg )
     if( lastToolClicked )
       lastToolClicked->setChecked( false );
     lastToolClicked = button;
-    QString & objname = button->objectName();
+    const QString & objname = button->objectName();
     Helper * helper = Helper::Instance();
     if( objname == QString("cursor") )
       tool_action = cursor;

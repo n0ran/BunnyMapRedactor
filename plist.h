@@ -3,9 +3,9 @@
 #pragma once
 #include <map>
 #include "helper.h"
-#include <QPushButton>
+#include <QtWidgets/QPushButton>
 #include <QtXml/QXmlDefaultHandler>
-#include <QMainWindow>
+#include <QtWidgets/QMainWindow>
 #include <QFile>
 using std::map;
 
