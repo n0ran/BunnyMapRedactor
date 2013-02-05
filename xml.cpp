@@ -28,27 +28,27 @@ xmlHelper* xmlHelper::Instance()
 
 void xmlHelper::initDictionary()
 {
-  keyDictionary[True            ] = new QString( "true"             );
-  keyDictionary[False           ] = new QString( "false"            );
-  keyDictionary[Integer         ] = new QString( "integer"          );
-  keyDictionary[hexs            ] = new QString( "hexs"             );
-  keyDictionary[active          ] = new QString( "active"           );
-  keyDictionary[block           ] = new QString( "block"            );
-  keyDictionary[bomb            ] = new QString( "bomb"             );
-  keyDictionary[bunny           ] = new QString( "bunny"            );
-  keyDictionary[fire            ] = new QString( "fire"             );
-  keyDictionary[monster         ] = new QString( "monster"          );
-  keyDictionary[number          ] = new QString( "number"           );
-  keyDictionary[strong          ] = new QString( "strong"           );
-  keyDictionary[teleport        ] = new QString( "teleport"         );
-  keyDictionary[visible         ] = new QString( "visible"          );
-	keyDictionary[steps						] = new QString( "steps"						);
-  keyDictionary[parametres      ] = new QString( "parametres"       );
-  keyDictionary[horizontalNumber] = new QString( "horizontalNumber" );
-  keyDictionary[verticalNumber  ] = new QString( "verticalNumber"   );
-  keyDictionary[Dict            ] = new QString( "dict"             );
-  keyDictionary[Array           ] = new QString( "array"            );
-  keyDictionary[key             ] = new QString( "key"              );
+  keyDictionary[kv_True            ] = new QString( "true"             );
+  keyDictionary[kv_False           ] = new QString( "false"            );
+  keyDictionary[kv_Integer         ] = new QString( "integer"          );
+  keyDictionary[kv_hexs            ] = new QString( "hexs"             );
+  keyDictionary[kv_active          ] = new QString( "active"           );
+  keyDictionary[kv_block           ] = new QString( "block"            );
+  keyDictionary[kv_bomb            ] = new QString( "bomb"             );
+  keyDictionary[kv_bunny           ] = new QString( "bunny"            );
+  keyDictionary[kv_fire            ] = new QString( "fire"             );
+  keyDictionary[kv_monster         ] = new QString( "monster"          );
+  keyDictionary[kv_number          ] = new QString( "number"           );
+  keyDictionary[kv_strong          ] = new QString( "strong"           );
+  keyDictionary[kv_teleport        ] = new QString( "teleport"         );
+  keyDictionary[kv_visible         ] = new QString( "visible"          );
+	keyDictionary[kv_steps						] = new QString( "steps"						);
+  keyDictionary[kv_parametres      ] = new QString( "parametres"       );
+  keyDictionary[kv_horizontalNumber] = new QString( "horizontalNumber" );
+  keyDictionary[kv_verticalNumber  ] = new QString( "verticalNumber"   );
+  keyDictionary[kv_Dict            ] = new QString( "dict"             );
+  keyDictionary[kv_Array           ] = new QString( "array"            );
+  keyDictionary[kv_key             ] = new QString( "key"              );
 }
 
 keyValues xmlHelper::getKeyDefByString( const QString & str )
@@ -61,7 +61,7 @@ keyValues xmlHelper::getKeyDefByString( const QString & str )
       return it->first;
     }
   }
-  return unknown;
+  return kv_unknown;
 }
 
 QString xmlHelper::getStringByKeyDef( keyValues val )
@@ -103,9 +103,9 @@ QString xmlHelper::getStringByBoolean( bool val )
 {
   xmlHelper * helper = xmlHelper::Instance();
   if( val )
-    return QString(helper->getStringByKeyDef(True));
+    return QString(helper->getStringByKeyDef(kv_True));
 
-  return QString(helper->getStringByKeyDef(False));
+  return QString(helper->getStringByKeyDef(kv_False));
 }
 QString xmlHelper::getStringByInteger( int val )
 {
@@ -132,10 +132,10 @@ bool xmlReader::startElement(
 
   switch( val )
   {
-  case Array:
+  case kv_Array:
     isArray = true;
     break;
-  case Dict:
+  case kv_Dict:
     if( isArray )
       pcell = new CCell(-1);
     break;
@@ -157,7 +157,7 @@ bool xmlReader::endElement(
   switch( val )
   {
 
-  case unknown:
+  case kv_unknown:
     break;
   default:   
     lastKey = val;
@@ -169,21 +169,21 @@ bool xmlReader::endElement(
   {
     switch( val )
     {
-    case True:
+    case kv_True:
       lastVal = val;
       setValueByLastKey( lastKey );
       break;
-    case False:
+    case kv_False:
       //doNothing
       break;
-    case Integer:
+    case kv_Integer:
       lastVal = val;
       setValueByLastKey( lastKey );
       break;
-    case Array:
+    case kv_Array:
       isArray = false;
       break;
-    case Dict:
+    case kv_Dict:
       pplist->addItem( pcell );
       pcell = NULL;
       break;
@@ -198,7 +198,7 @@ bool xmlReader::endElement(
 	{
 		switch( val )
 		{
-		case Integer:
+		case kv_Integer:
 			lastVal = val;
 			setParamsValues( lastKey );
 			break;
@@ -225,13 +225,13 @@ bool xmlReader::setParamsValues( keyValues val )
 {
 	switch( val )
 	{
-	case verticalNumber:
+	case kv_verticalNumber:
 		pplist->SetHeight( currentText.toInt() );
 		break;
-	case horizontalNumber:
+	case kv_horizontalNumber:
 		pplist->SetWidth( currentText.toInt() );
 		break;
-	case steps:
+	case kv_steps:
 		pplist->SetSteps( currentText.toInt() );
 	/*default:
 		break;*/
@@ -246,39 +246,39 @@ bool xmlReader::setValueByLastKey( keyValues val )
 	state st = s_original;
   switch( val )
   {
-  case active:
+  case kv_active:
     pcell->setState( s_active );
     break;
-  case block:
+  case kv_block:
     pcell->setState( s_block );
     break;
-  case bomb:
+  case kv_bomb:
     pcell->timer = currentText.toInt();
     if( pcell->timer >= 0 )
       pcell->setState( s_bomb );
     break;
-  case bunny:
+  case kv_bunny:
     pcell->setState( s_bunny );
     break;
-  case fire:
+  case kv_fire:
     pcell->setState( s_fire );
     break;
-  case monster:
+  case kv_monster:
     pcell->setState( s_monster );
     break;
-  case number:
+  case kv_number:
     pcell->index = currentText.toInt();
     break;
-  case strong:
+  case kv_strong:
     pcell->setState( s_strong );
     break;
-  case teleport:
+  case kv_teleport:
     pcell->setState( s_teleport );
     break;
-  case visible:
-    if( lastVal == True )
+  case kv_visible:
+    if( lastVal == kv_True )
       pcell->isVisible = true;
-    else if( lastVal == False )
+    else if( lastVal == kv_False )
       pcell->isVisible = false;
     break;
     //  case parametres:

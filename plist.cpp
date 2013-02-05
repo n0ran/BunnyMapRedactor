@@ -103,21 +103,21 @@ bool CPlist::Serialize( QTextStream * out, int &level )
 {
   xmlHelper * helper = xmlHelper::Instance();
   StreamWrite( out, "<plist version=\"1.0\">" );
-  StreamWriteLevUp( out, oTag( helper->getStringByKeyDef(Dict) ) );
-  StreamWrite( out, xmlHelper::wrapKeyValInKeyVal( key, hexs ) );
+  StreamWriteLevUp( out, oTag( helper->getStringByKeyDef(kv_Dict) ) );
+  StreamWrite( out, xmlHelper::wrapKeyValInKeyVal( kv_key, kv_hexs ) );
 
-  StreamWriteLevUp( out, oTag( helper->getStringByKeyDef(Array) ) );
+  StreamWriteLevUp( out, oTag( helper->getStringByKeyDef(kv_Array) ) );
   map< int, CCell* >::const_iterator it;
   for( it = arr.begin(); it != arr.end(); ++it )
   {
     it->second->Serialize( out, level );
   }
 
-  StreamWriteLevDown( out, cTag( helper->getStringByKeyDef(Array) ) );
+  StreamWriteLevDown( out, cTag( helper->getStringByKeyDef(kv_Array) ) );
 
   params.Serialize( out, level );
 
-  StreamWriteLevDown( out, cTag( helper->getStringByKeyDef(Dict) ) );
+  StreamWriteLevDown( out, cTag( helper->getStringByKeyDef(kv_Dict) ) );
   StreamWriteLevDown( out, "</plist>" );
 
   return true;
@@ -236,38 +236,38 @@ void CCell::UpdateView()
 bool CCell::Serialize( QTextStream * out, int &level )
 {
   xmlHelper * helper = xmlHelper::Instance();
-  StreamWriteLevUp( out, oTag( helper->getStringByKeyDef(Dict) ) );
+  StreamWriteLevUp( out, oTag( helper->getStringByKeyDef(kv_Dict) ) );
 
-  StreamWrite( out, xmlHelper::wrapKeyValInKeyVal( key, active ) );
+  StreamWrite( out, xmlHelper::wrapKeyValInKeyVal( kv_key, kv_active ) );
   StreamWrite( out, ocTag( xmlHelper::getStringByBoolean( unit == s_active ) ) );
 
-  StreamWrite( out, xmlHelper::wrapKeyValInKeyVal( key, block ) );
+  StreamWrite( out, xmlHelper::wrapKeyValInKeyVal( kv_key, kv_block ) );
   StreamWrite( out, ocTag( xmlHelper::getStringByBoolean( hextype == s_block ) ) );
 
-  StreamWrite( out, xmlHelper::wrapKeyValInKeyVal( key, bomb) );
-  StreamWrite( out, xmlHelper::wrapStringInKeyVal( Integer, xmlHelper::getStringByInteger(timer)) );
+  StreamWrite( out, xmlHelper::wrapKeyValInKeyVal( kv_key, kv_bomb) );
+  StreamWrite( out, xmlHelper::wrapStringInKeyVal( kv_Integer, xmlHelper::getStringByInteger(timer)) );
 
-  StreamWrite( out, xmlHelper::wrapKeyValInKeyVal( key, bunny ) );
+  StreamWrite( out, xmlHelper::wrapKeyValInKeyVal( kv_key, kv_bunny ) );
   StreamWrite( out, ocTag( xmlHelper::getStringByBoolean( unit == s_bunny ) ) );
 
-  StreamWrite( out, xmlHelper::wrapKeyValInKeyVal( key, fire ) );
+  StreamWrite( out, xmlHelper::wrapKeyValInKeyVal( kv_key, kv_fire ) );
   StreamWrite( out, ocTag( xmlHelper::getStringByBoolean( hextype == s_fire ) ) );
 
-  StreamWrite( out, xmlHelper::wrapKeyValInKeyVal( key, monster ) );
+  StreamWrite( out, xmlHelper::wrapKeyValInKeyVal( kv_key, kv_monster ) );
   StreamWrite( out, ocTag( xmlHelper::getStringByBoolean( unit == s_monster ) ) );
 
-  StreamWrite( out, xmlHelper::wrapKeyValInKeyVal( key, number) );
-  StreamWrite( out, xmlHelper::wrapStringInKeyVal( Integer, xmlHelper::getStringByInteger(index)) );
+  StreamWrite( out, xmlHelper::wrapKeyValInKeyVal( kv_key, kv_number) );
+  StreamWrite( out, xmlHelper::wrapStringInKeyVal( kv_Integer, xmlHelper::getStringByInteger(index)) );
 
-  StreamWrite( out, xmlHelper::wrapKeyValInKeyVal( key, strong ) );
+  StreamWrite( out, xmlHelper::wrapKeyValInKeyVal( kv_key, kv_strong ) );
   StreamWrite( out, ocTag( xmlHelper::getStringByBoolean( hextype == s_strong ) ) );
 
-  StreamWrite( out, xmlHelper::wrapKeyValInKeyVal( key, teleport ) );
+  StreamWrite( out, xmlHelper::wrapKeyValInKeyVal( kv_key, kv_teleport ) );
   StreamWrite( out, ocTag( xmlHelper::getStringByBoolean( hextype == s_teleport ) ) );
 
-  StreamWrite( out, xmlHelper::wrapKeyValInKeyVal( key, visible ) );
+  StreamWrite( out, xmlHelper::wrapKeyValInKeyVal( kv_key, kv_visible ) );
   StreamWrite( out, ocTag( xmlHelper::getStringByBoolean( isVisible ) ) );
-  StreamWriteLevDown( out, cTag( helper->getStringByKeyDef(Dict) ) );
+  StreamWriteLevDown( out, cTag( helper->getStringByKeyDef(kv_Dict) ) );
   return true;
 }
 
@@ -283,20 +283,20 @@ bool CParametres::Serialize( QTextStream * out, int &level )
 {
   xmlHelper * helper = xmlHelper::Instance();
   
-  StreamWrite( out, xmlHelper::wrapKeyValInKeyVal( key, parametres ) );
+  StreamWrite( out, xmlHelper::wrapKeyValInKeyVal( kv_key, kv_parametres ) );
 
-  StreamWriteLevUp( out, oTag( helper->getStringByKeyDef(Dict) ) );
+  StreamWriteLevUp( out, oTag( helper->getStringByKeyDef(kv_Dict) ) );
 
-	StreamWrite( out, xmlHelper::wrapKeyValInKeyVal( key, steps) );
-	StreamWrite( out, xmlHelper::wrapStringInKeyVal( Integer, xmlHelper::getStringByInteger(_steps)) );
+	StreamWrite( out, xmlHelper::wrapKeyValInKeyVal( kv_key, kv_steps) );
+	StreamWrite( out, xmlHelper::wrapStringInKeyVal( kv_Integer, xmlHelper::getStringByInteger(_steps)) );
 
-  StreamWrite( out, xmlHelper::wrapKeyValInKeyVal( key, horizontalNumber) );
-  StreamWrite( out, xmlHelper::wrapStringInKeyVal( Integer, xmlHelper::getStringByInteger(_horizontalNumber)) );
+  StreamWrite( out, xmlHelper::wrapKeyValInKeyVal( kv_key, kv_horizontalNumber) );
+  StreamWrite( out, xmlHelper::wrapStringInKeyVal( kv_Integer, xmlHelper::getStringByInteger(_horizontalNumber)) );
 
-  StreamWrite( out, xmlHelper::wrapKeyValInKeyVal( key, verticalNumber) );
-  StreamWrite( out, xmlHelper::wrapStringInKeyVal( Integer, xmlHelper::getStringByInteger(_verticalNumber)) );
+  StreamWrite( out, xmlHelper::wrapKeyValInKeyVal( kv_key, kv_verticalNumber) );
+  StreamWrite( out, xmlHelper::wrapStringInKeyVal( kv_Integer, xmlHelper::getStringByInteger(_verticalNumber)) );
 
-  StreamWriteLevDown( out, cTag( helper->getStringByKeyDef(Dict) ) );
+  StreamWriteLevDown( out, cTag( helper->getStringByKeyDef(kv_Dict) ) );
   return true;
 }
 
