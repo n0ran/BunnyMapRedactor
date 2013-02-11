@@ -21,7 +21,8 @@ HEADERS  += mainwindow.h \
     helper.h \
     xml.h \
     plist.h \
-    mapsizedialog.h
+    mapsizedialog.h \
+    build.h
 
 FORMS    += mainwindow.ui \
     mapsizedialog.ui

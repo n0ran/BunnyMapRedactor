@@ -103,3 +103,34 @@ pNamesVector Helper::GetItemNames ()
 {
     return ItemNames;
 }
+
+bool GetIndexVector( int vertical, int horizontal, std::vector<long> & indexes )
+{
+    indexes.clear();
+    const int & ver = vertical;
+    const int & hor = horizontal;
+    int start = 0, finish = 0;
+    int even  = 0, odd    = 0;
+    //const int length = ver * ( hor / 2 + 1 )
+    //              + ( ver + 1 ) * ( hor / 2 );
+    for( int col = 0; col < hor; ++col )
+    {
+        if( col % 2 == 0 )
+        {
+            start  = ( 2 * ver + 1 ) * even;
+            finish = ( 2 * ver + 1 ) * even + ver;
+            even  += 1;
+        }
+        else
+        {
+            start  = finish;
+            finish = ( 2 * ver + 1 ) * odd + 2 * ver + 1;
+            odd   += 1;
+        }
+        for( int ind = finish - 1; ind > start; --ind )
+        {
+            indexes.push_back( ind );
+        }
+    }
+    return true;
+}

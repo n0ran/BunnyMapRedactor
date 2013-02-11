@@ -45,4 +45,6 @@ private:
     pNamesVector ItemNames;
 };
 
+bool GetIndexVector( int vertical, int horizontal, std::vector<long> & indexes );
+
 #endif // HELPER_H

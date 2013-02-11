@@ -21,7 +21,7 @@ public:
   bool Serialize( QTextStream * out, int &level );
 public:
   state hextype;
-	state unit;
+  state unit;
   int   timer;
   int   index;
   bool  isVisible;
@@ -40,7 +40,7 @@ public:
 public:
   int _horizontalNumber;
   int _verticalNumber;
-	int _steps;
+  int _steps;
 };
 
 ;

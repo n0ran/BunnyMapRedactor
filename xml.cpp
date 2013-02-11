@@ -42,7 +42,7 @@ void xmlHelper::initDictionary()
   keyDictionary[kv_strong          ] = new QString( "strong"           );
   keyDictionary[kv_teleport        ] = new QString( "teleport"         );
   keyDictionary[kv_visible         ] = new QString( "visible"          );
-	keyDictionary[kv_steps						] = new QString( "steps"						);
+  keyDictionary[kv_steps           ] = new QString( "steps"            );
   keyDictionary[kv_parametres      ] = new QString( "parametres"       );
   keyDictionary[kv_horizontalNumber] = new QString( "horizontalNumber" );
   keyDictionary[kv_verticalNumber  ] = new QString( "verticalNumber"   );

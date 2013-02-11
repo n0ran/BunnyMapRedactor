@@ -37,21 +37,42 @@ CPlist::~CPlist(void)
 
 void CPlist::initArray( QMainWindow * mWnd )
 {
-  int col = 0;
-  for( int i = 0; i < params._verticalNumber * params._horizontalNumber;  )
-  {
-    int num = (col%2 == 0) ? params._verticalNumber-1 : params._verticalNumber;
-    if( num == params._verticalNumber-1 )
-      i++;
-    for( int k = 0; k < num; k++, i++ )
+//    int & ver = params._verticalNumber;
+//    int & hor = params._horizontalNumber;
+//    int start = 0, finish = 0;
+//    int even  = 0, odd    = 0;
+//    //const int length = ver * ( hor / 2 + 1 )
+//    //              + ( ver + 1 ) * ( hor / 2 );
+//    for( int col = 0; col < hor; ++col )
+//    {
+//        if( col % 2 == 0 )
+//        {
+//            start  = ( 2 * ver + 1 ) * even;
+//            finish = ( 2 * ver + 1 ) * even + ver;
+//            even  += 1;
+//        }
+//        else
+//        {
+//            start  = finish;
+//            finish = ( 2 * ver + 1 ) * odd + 2 * ver + 1;
+//            odd   += 1;
+//        }
+//        for( int ind = start + 1; ind < finish; ++ind )
+//        {
+//            CCell * item = new CCell(ind);
+//            item->initButton( mWnd );
+//            arr[ind] = item;
+//        }
+//    }
+    std::vector<long> indexes;
+    GetIndexVector( params._verticalNumber, params._horizontalNumber, indexes );
+    for( std::vector<long>::iterator it = indexes.begin(); it != indexes.end(); ++it )
     {
-      int ind = (col+1)*params._verticalNumber - (k + 1);
-      CCell * item = new CCell(ind);
-      item->initButton( mWnd );
-      arr[ind] = item;
+        int ind = *it;
+        CCell * item = new CCell(ind);
+        item->initButton( mWnd );
+        arr[ind] = item;
     }
-    col++;
-  }
 }
 
 void CPlist::initArray( QMainWindow * mWnd, QString &filename )

@@ -9,6 +9,7 @@
 #include <QtWidgets/QMessageBox>
 #include <QtWidgets/QPushButton>
 #include <QtWidgets/QFileDialog>
+#include "build.h"
 
 MainWindow::MainWindow(QWidget *parent) :
     QMainWindow(parent),
@@ -16,7 +17,7 @@ MainWindow::MainWindow(QWidget *parent) :
     ui( NULL )
 {
   StartInit();
-
+  setWindowTitle( windowTitle() + "   " + GetBuildInfo() );
 }
 
 MainWindow::~MainWindow()
@@ -147,6 +148,9 @@ void MainWindow::SetupWidgets ()
     QVBoxLayout * vertLayout  = NULL;
     QHBoxLayout * horLayout   = NULL;
     int col = 0;
+    std::vector<long> indexes;
+    GetIndexVector( plst.GetHeight(), plst.GetWidth(), indexes );
+    int n = 0;
     for( int i = 0; i < plst.GetWidth() * plst.GetHeight();  )
     {
       horLayout = new QHBoxLayout( this );
@@ -161,7 +165,7 @@ void MainWindow::SetupWidgets ()
         i++;
       for( int k = 0; k < num; k++, i++ )
       {
-        int ind = (col+1)*plst.GetHeight() - (k + 1);
+        int ind = indexes[n++];//(col+1)*plst.GetHeight() - (k + 1);
 				CCell * item = plst.getItem( ind );
         QPushButton * button = item->button;
         vertLayout->addWidget( button );
@@ -173,6 +177,8 @@ void MainWindow::SetupWidgets ()
       }
       col++;
     }
+
+
     connect(signalMapper, SIGNAL(mapped(QWidget*)),
             this, SLOT(labelClicked(QWidget*)));
 
